@@ -1,12 +1,12 @@
 % About
 # <i class="fas fa-glasses"></i>About {-}
-In this website are available the codes used as motivation examples for the manuscript *Statistical Models and Approaches to Deciphering the Genotype-by-Environment Interaction (GEI) Effect: An Applicable Review for Use in Plant Breeding Programs*
+In this website are available the data and scripts used in the manuscript *MGIDI: a powerful tool to analyze plant multivariate data*
 
 
 # <i class="fas fa-code"></i>How to reproduce? {-}
 
-* Download data
-* Open the `code.Rmd` file in RStudio.
+* [Download data](https://github.com/TiagoOlivoto/paper_mgidi_pm/archive/refs/heads/master.zip)
+* Open the `*.Rmd` file in RStudio.
 * Optionally change functions and arguments.
 * Knit the document to see the results.
 

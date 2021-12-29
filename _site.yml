@@ -27,10 +27,10 @@ navbar:
     href: sup_tables.html
   - text: "Code and data"
     icon: fa fa-download
-    href: https://github.com/TiagoOlivoto/paper_pliman/archive/refs/heads/master.zip
+    href: https://github.com/TiagoOlivoto/paper_mgidi_pm/archive/refs/heads/master.zip
   - text: "Doi"
     icon: ai ai-doi ai
-    href: https://doi.org/10.5281/zenodo.5666820
+    href: https://doi.org/10.5281/zenodo.5809502
   right:
   - text: metan
     icon: fa-github
