@@ -1,0 +1,266 @@
+% Supplementary figures 
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(cache = TRUE, comment = "##", collapse = TRUE)
+xaringanExtra::use_panelset()
+```
+
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+library(metan)      # MGIDI index
+library(rio)        # data importation
+library(tidyverse)  # plots, data manipulation
+
+```
+
+
+```{r echo=FALSE}
+df <-
+  import("https://bit.ly/strawberry_data", setclass = "tbl") %>% 
+  metan::as_factor(1:4)
+
+# helper function
+plot_vars <- function(df,  y, vjustlab = -3){
+  df_cult_ori <-
+    df %>%
+    group_by(ORI, CUL) %>%
+    desc_stat({{y}}, stats = c("mean, se")) %>% 
+    add_cols(upper = mean + se)
+  
+  df_sub <-
+    df %>%
+    group_by(SUB) %>%
+    desc_stat({{y}}, stats = c("mean, se")) %>% 
+    add_cols(upper = mean + se)
+  
+  max_vals <- max(max(df_cult_ori$upper), max(df_sub$upper))
+  p1 <-
+    ggplot(df_cult_ori, aes(CUL, mean, fill = ORI)) +
+    stat_summary(fun = mean,
+                 geom = "bar",
+                 width = .7,
+                 position = position_dodge(width = .7),
+                 color = "black") +
+    geom_errorbar(aes(ymin = mean - se, ymax =  mean + se),
+                  width = 0.2,
+                  position = position_dodge(width = .7)) +
+    geom_hline(aes(yintercept = mean(mean)), linetype = 2) +
+    geom_text(aes(label = round(mean, 2)),
+               position = position_dodge(width = .7),
+              vjust = 5) + 
+    theme(legend.position = "bottom") +
+    scale_y_continuous(expand = expansion(c(0, 0.1)),
+                       limits = c(0, max_vals)) +
+    labs(y = quo_name(enquo(y)),
+         x = "Cultivars") + 
+    theme_metan() + 
+    theme(legend.position = c(0.1, 0.9))
+  
+  p2 <- 
+    ggplot(df_sub, aes(SUB, mean)) +
+    geom_bar(stat = "summary",
+             color = "black",
+             fill = "gray",
+             width = .7,
+             fun = "mean") +
+    geom_hline(aes(yintercept = mean(mean)), linetype = 2) +
+    geom_errorbar(aes(ymin = mean - se, ymax =  mean + se),
+                  width = 0.2,
+                  position = position_dodge(width = .7)) +
+        geom_text(aes(label = round(mean, 2)),
+              vjust = 5) + 
+    theme_metan() +
+    theme(legend.position = "bottom") +
+    scale_y_continuous(expand = expansion(c(0, 0.1)),
+                       limits = c(0, max_vals)) +
+    labs(y = quo_name(enquo(y)),
+         x = "Substrate")
+  return(
+    arrange_ggplot(p1, p2,
+                   tag_levels = "a")
+  )
+}
+```
+
+# Traits with negative desired gains {.panelset}
+
+## AWNCF
+
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Average weight of non-commercial fruits. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+
+plot_vars(df, AWNCF)
+
+```
+
+## NDBF
+
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Begin of floration (days). a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, NDBF)
+
+```
+
+
+
+
+
+## NDFF
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Plene floration (days). a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, NDFF)
+
+```
+
+
+## NDBH
+
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Begin of harvest (days). a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, NDBH)
+
+```
+
+
+## NNCF
+
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Number of non-commercial fruits. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+
+
+plot_vars(df, NNCF)
+
+```
+
+
+
+## PHYL
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Phyllochron.  a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, PHYL)
+
+```
+
+
+## TA
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Total acid. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, TA)
+```
+
+
+## WNCF
+
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Weight of non-commercial fruits. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, WNCF, vjustlab = -5)
+```
+
+
+## WUE
+
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Water use efficiency. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, WUE)
+```
+
+
+
+# Traits with positive desired gains {.panelset}
+
+## AWCF
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Average weigth of comercial fruits. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, AWCF, vjustlab = -1)
+
+```
+
+
+## CHROMA
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="CHROMA. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, CHROMA, vjustlab = -1)
+```
+
+## FIRM
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Flesh firmness. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, FIRM, vjustlab = -1)
+```
+
+
+
+## FY
+
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Fruit yield.  a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, FY)
+```
+
+## H
+
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Hue angle. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, H, vjustlab = -1)
+```
+
+
+
+## L
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="L. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, L, vjustlab = -1)
+```
+
+
+
+
+## NCF
+
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Number of commercial fruits. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, NCF)
+```
+
+## OAWF
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Overall average of weigth of fruits. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, OAWF, vjustlab = -1)
+```
+
+
+
+## TNF
+
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Total number of fruits. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, TNF)
+```
+
+
+## TSS
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Total soluble solids. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, TSS, vjustlab = -1)
+```
+
+
+## TSS_TA
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="TSS/TA ratio.  a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, TSS_TA, vjustlab = -1)
+```
+
+
+## TWF
+
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Total weight of fruits. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, TWF)
+
+```
+
+
+
+## WCF
+
+```{r echo=FALSE, fig.height=4, fig.width=10, fig.cap="Weight of commercial fruits. a: Cultivar (ALB: Albion; CAM: Camarosa) x origin (NAC: National; IMP: Imported) interaction; b: substrate main effect (S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate; S3: Rice husk + organic compost; and S4: Rice husk + commercial substrate). The horizonal dashed line shows the overall mean. Bars shows the mean +- standard error. N = 16."}
+plot_vars(df, WCF)
+```
+
+
+# Water retention curve
+
+```{r echo=FALSE}
+wrc <- 
+  import("data/TABLES.xlsx", sheet = "substrate3") %>% 
+  pivot_longer(-SUBSTRATE,
+               names_to = "tension") %>% 
+  as_numeric(tension)
+ggplot(wrc, aes(tension, value, color = SUBSTRATE, group = SUBSTRATE)) +
+  stat_summary(geom = "point", fun = mean) +
+  stat_summary(geom = "line", fun = mean) +
+  labs(x = "Water tension (kPa)",
+       y = expression(Moisture~(cm^3~cm^{-3})))
+```
+

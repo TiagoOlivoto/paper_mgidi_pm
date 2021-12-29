@@ -1,0 +1,512 @@
+% Analysis 
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(cache = TRUE, comment = "##", collapse = TRUE)
+
+```
+
+\renewcommand{\figurename}{Fig. S}
+
+# Libraries
+
+To reproduce the examples of this material, the R packages [`metan`](https://cran.r-project.org/web/packages/metan/index.html), [`rio`](https://cran.r-project.org/web/packages/rio/index.html), [`broom`](https://cran.r-project.org/web/packages/broom/index.html), and [`purrr`](https://cloud.r-project.org/web/packages/purrr/index.html) are needed.
+
+```{r warning=FALSE, message=FALSE}
+library(metan)      # MGIDI index
+library(rio)        # data importation
+library(broom)      # convert statistical objects into tidy tibbles
+library(purrr)      # Manipulate lists
+library(tidyverse)  # plots, data manipulation
+library(kableExtra) # html tables
+library(emmeans)    # pairwise multiple comparison
+library(ExpDes)     # pairwise multiple comparison
+
+```
+
+
+```{r}
+my_theme <- 
+  theme_gray() +
+  theme(legend.title = element_blank(),
+        axis.title = element_text(color = "black"),
+        axis.text = element_text(color = "black"),
+        panel.grid.minor = element_blank())
+```
+
+
+# Simulated data
+## A simple example
+Here, we use a simple example with only 5 treatments and 3 traits to show how the MGIDI index can be used even with few traits/treatments.
+
+```{r}
+df <- 
+  g_simula(ngen = 5,
+           nrep = 3,
+           nvars = 3,
+           seed = c(3, 20, 40)) %>% 
+  replace_string(GEN, pattern =  "H", replacement = "T")
+```
+
+### Pairwise multiple comparisons
+```{r}
+v1_mod <- aov(V1 ~ REP + GEN, data = df)
+v2_mod <- aov(V2 ~ REP + GEN, data = df)
+v3_mod <- aov(V3 ~ REP + GEN, data = df)
+
+anovas <- 
+  list(v1 = tidy(v1_mod),
+       v2 = tidy(v2_mod),
+       v3 = tidy(v3_mod)) %>% 
+  rbind_fill_id(.id = "Traits")
+anovas
+
+v1_means <- emmeans(v1_mod, ~ GEN)
+v2_means <- emmeans(v2_mod, ~ GEN)
+v3_means <- emmeans(v3_mod, ~ GEN)
+
+# plots
+p1 <-
+  plot(v1_means,
+       comparisons = TRUE,
+       CIs = FALSE,
+       xlab = "Mean",
+       ylab = "Treatments") + 
+  geom_vline(xintercept = mean(df$V1)) +
+  my_theme
+
+p2 <- 
+  plot(v2_means,
+       comparisons = TRUE,
+       CIs = FALSE,
+       xlab = "Mean",
+       ylab = "Treatments") +
+  geom_vline(xintercept = mean(df$V2)) +
+  my_theme
+
+p3 <- 
+  plot(v3_means,
+       comparisons = TRUE,
+       CIs = FALSE,
+       xlab = "Mean",
+       ylab = "Treatments") +
+  geom_vline(xintercept = mean(df$V2)) +
+  my_theme
+```
+
+
+
+### The MGIDI index
+
+The MGIDI index is computed with the function `mgidi()`. The function has the following arguments.
+
+* `.data`: An object fitted with the function `gafem()`, `gamem()` or a two-way table with BLUPs/means for treatments in each trait (treatments in rows and traits in columns). In the last case, row names must contain the treatments' names.
+
+* `use_data`: Define which data to use if `.data` is an object of class `gamem`. Defaults to `"blup"` (the BLUPs for genotypes). Use `"pheno"` to use phenotypic means instead BLUPs for computing the index.
+
+* `SI`: An integer (0-100). The selection intensity in percentage of the total number of genotypes/treatments.
+
+* `mineval`: The minimum value so that an eigenvector is retained in the factor analysis. Defaults to 1.
+
+* `ideotype`: A vector of length nvar where nvar is the number of variables used to plan the ideotype. Use `'h'` to indicate the traits in which higher values are desired or `'l'` to indicate the variables in which lower values are desired. For example, `ideotype = c("h, h, h, h, l")` will consider that the ideotype has higher values for the first four traits (following the order of columns in `.data`) and lower values for the last trait. If `.data` is a model fitted with the functions `gafem()` or `gamem()`, the order of the traits will be the declared in the argument `resp` in those functions.
+
+* `use`: The method for computing covariances in the presence of missing values. Defaults to `complete.obs`, i.e., missing values are handled by casewise deletion.
+
+* `verbose`: If `verbose = TRUE` (Default) then some results are shown in the console.
+
+In the following example, the MGIDI index is computed with the predicted values from a multivariate analysis of variance model. Three scenarios are shown: (i) for all traits higher values are better; (ii) lower values better for the first two traits and higher values better for the last trait; and (iii) lower values better for all the traits.
+
+```{r}
+man <- manova(cbind(V1, V2, V3) ~ REP + GEN, data = df)
+summary(man)
+
+# predict the mean values
+# compute a two-way table with genotypes in rows and traits in columns
+
+pred_mat <- 
+  predict(man) %>% 
+  as.data.frame() %>% 
+  mutate(TRAT = df$GEN) %>% 
+  means_by(TRAT) %>% 
+  column_to_rownames("TRAT")
+
+
+# higher values for all traits are better
+ind <- mgidi(pred_mat,
+             ideotype = c("h, h, h"), # default
+             verbose = FALSE,
+             mineval = 0.5) # retains two factors
+p4 <-
+  plot(ind,
+       x.lab = "Treatments",
+       y.lab = "MGIDI index",
+       radar = FALSE) +
+  my_theme
+ind$sel_dif
+
+# lower values for the first two traits
+# higher values for the last 
+ind2 <- mgidi(pred_mat,
+              ideotype = c("l, l, h"),
+              verbose = FALSE,
+              mineval = 0.5) # retains two factors
+p5 <- 
+  plot(ind2,
+       x.lab = "Treatments",
+       y.lab = "MGIDI index",
+       radar = FALSE) +
+  my_theme
+ind2$sel_dif
+
+
+# lower values for all the traits
+ind3 <- mgidi(pred_mat,
+              ideotype =  c("l, l, l"),
+              verbose = FALSE,
+              mineval = 0.5) # retains two factors
+p6 <-
+  plot(ind3,
+       x.lab = "Treatments",
+       y.lab = "MGIDI index",
+       radar = FALSE) +
+  my_theme
+ind3$sel_dif
+```
+
+
+
+```{r fig.width=10, fig.height=4, fig.cap="Pairwise comparisons for V1 (a), V2 (b), V3 (c), and the MGIDI index for three selection strategies, namely, desired higher values for all traits (c), lower values for V1 and V2 and higher values for V3 (d), and lower values for all traits (e)."}
+arrange_ggplot((p1 + p2 + p3),
+               (p4 + p5 + p6),
+               nrow = 2,
+               heights = c(0.6, 1),
+               tag_levels = "a",
+               guides = "collect")
+ggsave("figs/fig1.pdf", width = 8, height = 4)
+```
+
+
+## A complex example
+### Pairwise multiple comparisons
+
+In the following example, we will simulate data on 10 traits accessed in 75 treatments using the function `g_simula()` from `metan` package.
+```{r}
+# simulate data
+df_g <-
+  g_simula(ngen = 75,
+           nrep = 3,
+           nvars = 10,
+           seed = 1:10)
+
+# data in a 'long' format
+df_ge_long <-
+  pivot_longer(df_g,
+               cols = -c(GEN:REP),
+               names_to = "trait")
+# compute an ANOVA for each trait
+models_ge <-
+  df_ge_long %>%
+  group_by(trait) %>%
+  doo(~aov(value ~ REP + GEN, data = .))
+
+# obtain an anova table
+anovas_ge <- models_ge$data %>% map_dfr(~.x %>% tidy(), .id = "TRAIT")
+anovas_ge %>% filter(term == "GEN")
+```
+
+
+All traits with significant treatment effect. In this case, It would be reasonable to include a pairwise comparasion. We could obtain all the P-values using `pwpm()`, and look at each one of the 2775 ($75!/ (2! \times (75 - 2)!$) comparisions individually.
+
+```{r}
+# example for V1
+model_v1 <- models_ge$data[[1]]
+means_v1 <- emmeans(model_v1, ~ GEN)
+pairs <- pwpm(means_v1)
+
+```
+
+Definetively, this is not the better option. Another way to depict comparisons graphically via the comparisons argument in `plot.emm()`:
+
+```{r fig.height=15, fig.cap="Pairwise comparisons based on Tukey adjustment"}
+p7 <- plot(means_v1, comparisons = TRUE, CIs = FALSE)
+p7
+
+```
+
+The red arrows are for the comparisons among genotype's means. If an arrow from one mean overlaps an arrow from another group, the difference is not “significant,” based on the adjust setting (which defaults to "tukey").
+
+An alternative is the [Pairwise P-value plot](https://cran.r-project.org/web/packages/emmeans/vignettes/comparisons.html) displaying all the P-values in pairwise comparisons. Each comparison is associated with a vertical line segment that joins the scale positions of the two means being compared, and whose horizontal position is determined by the P-value of that comparison.
+
+```{r, fig.height=15, fig.cap="Pairwise P-value plot"}
+# shows only 'significant' (P-value < 0.05)
+p8 <- pwpp(means_v1) + scale_x_continuous(limits = c(0, 0.05))
+p8
+```
+
+
+Another way to depict comparisons is by compact letter displays, whereby two means sharing one or more grouping symbols are not “significantly” different. Here, I use the package [`ExpDes`](https://www.researchgate.net/publication/268443974_ExpDes_an_R_package_for_ANOVA_and_experimental_designs) to generate compact letter displays based on Tukey test.
+
+```{r}
+with(df_g,
+     rbd(GEN, REP, V1))
+```
+
+
+Now, we simply choose one of the above options and apply it to the other nine traits.
+
+
+### The MGIDI index
+
+In the following example, the MGIDI index is computed with the predicted values from a multivariate analysis of variance model. Three scenarios are shown: (i) for all traits higher values are better; (ii) higher values better for the first seven traits and lower values better for the last three traits; and (iii) lower values better for all the traits.
+
+```{r message=FALSE, warning=FALSE}
+man_complex <- 
+  manova(cbind(V1,V2,V3,V4,V5,V6,V7,V8,V9,V10) ~ REP + GEN,
+         data = df_g)
+summary(man_complex)
+
+
+# generate a two-way table with predicted values in rows and traits in columns
+pred_complex <- cbind(df_g[, 1:2], predict(man_complex))
+mat_g <-
+  pred_complex %>%
+  means_by(GEN) %>%
+  column_to_rownames("GEN")
+
+# higher values for all traits are better
+ind4 <- mgidi(mat_g,
+              ideotype = rep("h", 10), # default
+              verbose = FALSE)
+p9 <- plot(ind4, arrange.label = TRUE)
+p9
+ind4$sel_dif
+
+# higher values desired for the first 7 traits
+# lower values desired for the last 3 traits
+ind5 <- mgidi(mat_g,
+              ideotype = c(rep("h", 7), rep("l", 3)),
+              verbose = FALSE)
+p10 <- plot(ind5, arrange.label = TRUE)
+p10
+ind5$sel_dif
+
+
+# lower values for all the traits
+ind6 <- mgidi(mat_g,
+              ideotype =  rep("l", 10), # default
+              verbose = FALSE)
+p11 <- plot(ind6, arrange.label = TRUE)
+p11
+ind6$sel_dif
+```
+
+
+
+# Real data example (Strawberry)
+
+```{r  warning = FALSE, message = FALSE}
+rm(list = ls())
+df <-
+  import("https://bit.ly/strawberry_data", setclass = "tbl") %>% 
+  metan::as_factor(1:4)
+str(df)
+```
+
+
+## Multivariate Analysis of Variance
+
+The function `manova()` computes a multivariate analysis of variance `df`.
+
+```{r}
+man_straw <- manova(
+  cbind(NNCF,WNCF,AWNCF,WUE,NDBF,NDFF,NDBH,PHYL,TA,NCF,TNF
+        ,WCF, TWF,AWCF,OAWF,FY,TSS,TSS_TA,FIRM,L,CHROMA,H) ~ SUB*ORI*CUL, data = df)
+tidy(man_straw, intercept =  TRUE)
+
+```
+
+Since the only significant interaction was ORI:CUL, we will use the MGIDI index to analyze the interaction term and the main effect of substrat. First, the predicted values are obtained with `predict()`.
+
+```{r}
+# get the predicted values
+pred_vals <- cbind(df[,1:4], predict(man_straw))
+```
+
+
+
+## Origin x cultivar interaction
+
+The MGIDI index can be computed either using a model of class `gamem` or `gafem`, or by using a two-way table. In our example, we create a two-way table with the predicted values for each treatment (factor combinations) in rows and traits in columns.
+
+
+```{r}
+# compute a two-wat table with means by origin and cultivar
+df_ori_cul <-
+  pred_vals %>%
+  means_by(ORI, CUL) %>% 
+  concatenate(ORI, CUL, new_var = TRAT, .after = CUL) %>% 
+  remove_cols(ORI, CUL) %>% 
+  round_cols() %>% 
+  column_to_rownames("TRAT")
+
+df_ori_cul
+
+(ideotype_vector <- c(rep("l", 9), rep("h", 13)))
+mgidi_cul_ori <- 
+  mgidi(df_ori_cul,                 # a two-way table
+        ideotype = ideotype_vector, # ideotype vector
+        SI = 50)                    # select two treatments
+
+```
+
+
+### Plot the MGIDI index
+The radar plot with the treatment ranking based on the MGIDI index is created with the S3 method `plot`. The argument `type` controls which plot is created.
+```{r fig.width=10}
+p_ind_cul_ori <- 
+  plot(mgidi_cul_ori,
+       SI = 50,
+       radar = FALSE,
+       x.lab = "Origin x cultivar combination",
+       y.lab = "MGIDI index") +
+  theme_gray() +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom")
+
+```
+
+
+### The strengths and weaknesses view
+
+In the following code we obtain the contribution of each factor on the MGIDI value of all treatments. To do that, we use the argument `type = "contribution"`, and `genotypes = "all"` to show the contribution of all treatments in our case. By default, contribution plot shows only the selected treatments. in this case,
+
+```{r warning=FALSE, message=FALSE, fig.height=8, fig.width=5}
+p_cont_cul_ori <- 
+  plot(mgidi_cul_ori,
+       type = "contribution", # Get the proportion plot
+       genotypes = "all", # All treatments (selected treatments are plotted by default)
+       title = "")
+
+# save the plot
+arrange_ggplot(p_ind_cul_ori, p_cont_cul_ori,
+               ncol = 1,
+               tag_levels = "a")
+ggsave("figs/fig2.pdf", width = 4, height = 8)
+```
+
+
+
+### Selection differentials
+```{r}
+dif_cul_ori <- 
+  gmd(mgidi_cul_ori) %>% 
+  mutate(negative = ifelse(SDperc <= 0 , "Negative", "Positive")) %>% 
+  mutate(sense = ifelse(sense == "decrease", "Negative desired", "Positive desired"))
+
+ggplot(dif_cul_ori, aes(SDperc, VAR)) +
+  geom_vline(xintercept = 0, size = 0.2) + 
+  geom_col(aes(fill = negative),
+           width = 1,
+           col = "black",
+           size = 0.2) +
+  scale_x_continuous(expand = expansion(mult = 0.15)) +
+  facet_wrap(~ sense, scales = "free", ncol = 1) + 
+  geom_text(aes(label = round(SDperc, 2),
+                hjust = ifelse(SDperc > 0, -0.1, 1.1)),
+            size = 2) + 
+  labs(x = "Selection differential (%)",
+       y = "Traits") + 
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        panel.grid.minor = element_blank())
+ggsave("figs/fig3.pdf", width = 4, height = 5)
+```
+
+
+
+## Substrate main factor
+
+
+```{r}
+df_sub <- 
+  pred_vals %>% 
+  means_by(SUB) %>% 
+  column_to_rownames("SUB")
+
+mgidi_sub <-
+  mgidi(df_sub,  # a two-way table
+        ideotype = ideotype_vector, # ideotype vector
+        SI = 50) # select the top two substrates
+
+```
+
+
+### Plot the MGIDI index
+The radar plot with the treatment ranking based on the MGIDI index is created with the S3 method `plot`. The argument `type` controls which plot is created.
+```{r fig.width=10}
+p_ind_sub <- 
+  plot(mgidi_sub,
+       SI = 50,
+       radar = FALSE,
+       x.lab = "Origin x cultivar combination",
+       y.lab = "MGIDI index") +
+  theme_gray() +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom")
+```
+
+
+### The strengths and weaknesses view
+
+
+```{r warning=FALSE, message=FALSE, fig.height=8, fig.width=5}
+p_cont_sub <- 
+  plot(mgidi_sub,
+       type = "contribution", # Get the proportion plot
+       genotypes = "all", # All treatments (selected treatments are plotted by default)
+       title = "")
+
+# save the plot
+arrange_ggplot(p_ind_sub, p_cont_sub,
+               ncol = 1,
+               tag_levels = "a")
+ggsave("figs/fig4.pdf", width = 4, height = 8)
+```
+
+
+
+
+### Selection differentials
+```{r}
+dif_sub <- 
+  gmd(mgidi_sub) %>% 
+  mutate(negative = ifelse(SDperc <= 0 , "Negative", "Positive")) %>% 
+  mutate(sense = ifelse(sense == "decrease", "Negative desired", "Positive desired"))
+
+ggplot(dif_sub, aes(SDperc, VAR)) +
+  geom_vline(xintercept = 0, size = 0.2) + 
+  geom_col(aes(fill = negative),
+           width = 1,
+           col = "black",
+           size = 0.2) +
+    scale_x_continuous(expand = expansion(mult = 0.1)) +
+  facet_wrap(~ sense, scales = "free", ncol = 1) + 
+  geom_text(aes(label = round(SDperc, 2),
+                hjust = ifelse(SDperc > 0, -0.1, 1.1)),
+            size = 2) + 
+  labs(x = "Selection differential (%)",
+       y = "Traits") + 
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        panel.grid.minor = element_blank())
+
+ggsave("figs/fig5.pdf", width = 4, height = 5)
+
+```
+
+
+
+
+
+
+
+

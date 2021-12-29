@@ -1,0 +1,184 @@
+% Supplementary tables 
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(cache = TRUE, comment = "##", collapse = TRUE)
+
+```
+
+
+```{r  warning=FALSE, message=FALSE, include=FALSE}
+library(metan)      # MGIDI index
+library(rio)        # data importation
+library(broom)      # convert statistical objects into tidy tibbles
+library(purrr)      # Manipulate lists
+library(tidyverse)  # plots, data manipulation
+library(kableExtra) # html tables
+library(emmeans)    # pairwise multiple comparison
+library(ExpDes)     # pairwise multiple comparison
+
+```
+
+
+
+```{r  warning=FALSE, message=FALSE, include=FALSE}
+rm(list = ls())
+df <-
+  import("https://bit.ly/strawberry_data", setclass = "tbl") %>% 
+  metan::as_factor(1:4)
+str(df)
+```
+
+
+```{r  warning=FALSE, message=FALSE, include=FALSE}
+man_straw <- manova(
+  cbind(NNCF,WNCF,AWNCF,WUE,NDBF,NDFF,NDBH,PHYL,TA,NCF,TNF
+        ,WCF, TWF,AWCF,OAWF,FY,TSS,TSS_TA,FIRM,L,CHROMA,H) ~ SUB*ORI*CUL, data = df)
+pred_vals <- cbind(df[,1:4], predict(man_straw))
+
+```
+
+```{r  warning=FALSE, message=FALSE, include=FALSE}
+# compute a two-wat table with means by origin and cultivar
+df_ori_cul <-
+  pred_vals %>%
+  means_by(ORI, CUL) %>% 
+  concatenate(ORI, CUL, new_var = TRAT, .after = CUL) %>% 
+  remove_cols(ORI, CUL) %>% 
+  round_cols() %>% 
+  column_to_rownames("TRAT")
+
+
+(ideotype_vector <- c(rep("l", 9), rep("h", 13)))
+mgidi_cul_ori <- 
+  mgidi(df_ori_cul,                 # a two-way table
+        ideotype = ideotype_vector, # ideotype vector
+        SI = 50)                    # select two treatments
+
+```
+
+
+
+```{r  warning=FALSE, message=FALSE, include=FALSE}
+df_sub <- 
+  pred_vals %>% 
+  means_by(SUB) %>% 
+  column_to_rownames("SUB")
+
+mgidi_sub <-
+  mgidi(df_sub,  # a two-way table
+        ideotype = ideotype_vector, # ideotype vector
+        SI = 50) # select the top two substrates
+
+```
+
+
+
+
+
+```{r  warning=FALSE, message=FALSE, echo=FALSE}
+
+print_table = function(df,
+                       caption,
+                       digits = 2,
+                       full_width = TRUE,
+                       col.names = NA,
+                       longtable = FALSE,
+                       scape = FALSE,
+                       html_opt = c("striped", "responsive")){
+  kable(df,
+        align  = "l",
+        col.names = col.names,
+        booktabs = T,
+        digits = digits,
+        format = "html",
+        linesep = "",
+        caption = caption,
+        escape = scape,
+        longtable = longtable) %>%
+    kable_classic(lightable_options = "striped", html_font = "sans", full_width = full_width) %>% 
+    kable_styling(bootstrap_options = html_opt)
+}
+
+```
+
+
+# Hidroponic solution 
+
+```{r  warning=FALSE, message=FALSE, echo=FALSE}
+nutrient <- import("data/TABLES.xlsx", sheet = "nutrient")
+print_table(nutrient,
+            scape = TRUE,
+            caption = "Doses of mineral fertilizers in 1000 liters of water for strawberry fertigation in a substrate of pH 7 or above.")
+```
+
+
+# Substrate
+
+```{r  warning=FALSE, message=FALSE, echo=FALSE}
+substrates <- import("data/TABLES.xlsx", sheet = "substrate2")
+print_table(substrates,
+            scape = TRUE,
+            caption = "Concentrations of ingredients used to formulate each one of the four substrates used in the experiment.")
+```
+
+
+
+```{r  warning=FALSE, message=FALSE, echo=FALSE}
+
+substrates2 <- import("data/TABLES.xlsx")
+
+print_table(substrates2,
+            caption = "Density (DS), total porosity (TP), aeration space (AS), readily available water (RAW), buffer water (BW), available water (AW) and remaining water (AR) for the substrates used: S1: Sugarcane bagasse + organic compost; S2: Sugarcane bagasse + commercial substrate - Carolina; S3:  Rice husk + organic  compost; and  S4:  Rice husk + commercial substrate - Carolina.")
+```
+
+
+
+# Univariate selection
+
+```{r  warning=FALSE, message=FALSE, echo=FALSE}
+
+
+####### UNIVARIATE GAINS
+df_uni <- 
+  pred_vals %>%
+  rownames_to_column() %>% 
+  add_cols(SELECTED = ifelse(CUL == "CAM" & ORI  == "NAC", "yes", "no"))
+
+ov_mean <- 
+  means_by(df_uni) %>% 
+  t() %>%  
+  as.data.frame() %>%  
+  rownames_to_column("VAR")%>% 
+  rename(Xo = V1)
+
+direct_fy <- 
+  means_by(df_uni, SELECTED) %>%
+  subset(SELECTED == "yes") %>% 
+  remove_cols(1) %>% 
+  t() %>%  
+  as.data.frame() %>%  
+  rownames_to_column("VAR") %>% 
+  rename(Xs_uni = V1)
+
+
+df_direct <- 
+  left_join(ov_mean, direct_fy) %>% 
+  add_cols(SD = Xs_uni - Xo,
+           SDperc = (SD / Xo * 100),
+           goal =  c(rep("Low", 9), rep("High", 13)),
+           sucess = ifelse(goal == "Low" & SDperc < 0  |  goal == "High" & SDperc > 0, "Yes", "No"))
+
+
+print_table(df_direct,
+            caption = "Selection differential for mean performance based on the direct and univariate selection on fruit yield (Camarosa cultivar ",
+            col.names = c("TRAIT", "Xo", "Xs",  "SD", "SD (%)", "Goal", "Success"),
+            scape = TRUE) %>%
+  row_spec(which(df_direct$sucess == "No"), color = "red")
+```
+
+
+
+
+
+
+

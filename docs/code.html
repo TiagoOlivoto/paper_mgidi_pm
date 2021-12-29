@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+    
+    
+    <title>Analysis</title>
+
+        <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+        <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="site_libs/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="site_libs/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+        <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+        <script src="site_libs/navigation-1.1/tabsets.js"></script>
+        <link href="site_libs/magnific-popup-1.1.0/magnific-popup.css" rel="stylesheet" />
+        <script src="site_libs/magnific-popup-1.1.0/jquery.magnific-popup.min.js"></script>
+        <link href="site_libs/readthedown-0.1/readthedown.css" rel="stylesheet" />
+        <link href="site_libs/readthedown-0.1/readthedown_fonts_embed.css" rel="stylesheet" />
+        <script src="site_libs/readthedown-0.1/readthedown.js"></script>
+        <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+        <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+        <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+        <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+    
+    
+        <style type="text/css">code{white-space: pre;}</style>
+    <style type="text/css">
+      pre > code.sourceCode { white-space: pre; position: relative; }
+      pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+      pre > code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      pre > code.sourceCode { white-space: pre-wrap; }
+      pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+          color: #aaaaaa;
+        }
+      pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+      div.sourceCode
+        {  background-color: #f8f8f8; }
+      @media screen {
+      pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+      code span.al { color: #ef2929; } /* Alert */
+      code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+      code span.at { color: #c4a000; } /* Attribute */
+      code span.bn { color: #0000cf; } /* BaseN */
+      code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+      code span.ch { color: #4e9a06; } /* Char */
+      code span.cn { color: #000000; } /* Constant */
+      code span.co { color: #8f5902; font-style: italic; } /* Comment */
+      code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+      code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+      code span.dt { color: #204a87; } /* DataType */
+      code span.dv { color: #0000cf; } /* DecVal */
+      code span.er { color: #a40000; font-weight: bold; } /* Error */
+      code span.ex { } /* Extension */
+      code span.fl { color: #0000cf; } /* Float */
+      code span.fu { color: #000000; } /* Function */
+      code span.im { } /* Import */
+      code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+      code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+      code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+      code span.ot { color: #8f5902; } /* Other */
+      code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+      code span.sc { color: #000000; } /* SpecialChar */
+      code span.ss { color: #4e9a06; } /* SpecialString */
+      code span.st { color: #4e9a06; } /* String */
+      code span.va { color: #000000; } /* Variable */
+      code span.vs { color: #4e9a06; } /* VerbatimString */
+      code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+    </style>
+    
+    
+    <!-- tabsets -->
+    <script>
+      $(document).ready(function () {
+	  window.buildTabsets("toc");
+      });
+      $(document).ready(function () {
+	  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+	      $(this).parent().toggleClass('nav-tabs-open')
+	  });
+      });
+    </script>
+
+    <!-- code folding -->
+    
+    <!-- code download -->
+    
+    <!-- tabsets dropdown -->
+
+    <style type="text/css">
+      .tabset-dropdown > .nav-tabs {
+	  display: inline-table;
+	  max-height: 500px;
+	  min-height: 44px;
+	  overflow-y: auto;
+	  background: white;
+	  border: 1px solid #ddd;
+	  border-radius: 4px;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+	  content: "&#xe258;";
+	  border: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+	  content: "";
+	  font-family: 'Glyphicons Halflings';
+	  display: inline-block;
+	  padding: 10px;
+	  border-right: 1px solid #ddd;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li.active {
+	  display: block;
+      }
+
+      .tabset-dropdown > .nav-tabs > li.active a {
+  	  padding: 0 15px !important;
+      }
+
+      .tabset-dropdown > .nav-tabs > li > a,
+      .tabset-dropdown > .nav-tabs > li > a:focus,
+      .tabset-dropdown > .nav-tabs > li > a:hover {
+	  border: none;
+	  display: inline-block;
+	  border-radius: 4px;
+	  background-color: transparent;
+      }
+      
+      .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+	  display: block;
+	  float: none;
+      }
+      
+      .tabset-dropdown > .nav-tabs > li {
+	  display: none;
+	  margin-left: 0 !important;
+      }
+    </style>
+    
+</head>
+
+<body class="preload">
+
+   	
+         <!-- readthedown start -->   
+   <div id="content" data-toggle="wy-nav-shift">
+     <nav id="nav-top" role="navigation" aria-label="top navigation">
+       <a role="button" href="#" data-toggle="wy-nav-top"><span class="glyphicon glyphicon-menu-hamburger"></span></a>
+     </nav>
+         
+   
+      
+      <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">MGIDI Plant Methods</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li>
+        <a href="index.html">
+          <span class="fa fa-home"></span>
+           
+          About
+        </a>
+      </li>
+      <li>
+        <a href="code.html">
+          <span class="fa fa-file-code-o"></span>
+           
+          Sup. Codes
+        </a>
+      </li>
+      <li>
+        <a href="sup_figures.html">
+          <span class="fa fa-chart-area"></span>
+           
+          Sup. Figures
+        </a>
+      </li>
+      <li>
+        <a href="sup_tables.html">
+          <span class="fa fa-table"></span>
+           
+          Sup. Tables
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/TiagoOlivoto/paper_pliman/archive/refs/heads/master.zip">
+          <span class="fa fa-download"></span>
+           
+          Code and data
+        </a>
+      </li>
+      <li>
+        <a href="https://doi.org/10.5281/zenodo.5666820">
+          <span class="ai ai ai ai-doi ai"></span>
+           
+          Doi
+        </a>
+      </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li>
+        <a href="https://github.com/TiagoOlivoto/metan">
+          <span class="fa fa-github"></span>
+           
+          metan
+        </a>
+      </li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container -->
+      </div><!--/.navbar -->
+        
+      <h1 class="title">Analysis</h1>
+      
+         <!-- readthedown authors -->
+   <div id="sidebar">
+    <h2><a href="#content">Analysis</a></h2>
+    <div id="toc">
+      <ul>
+      <li><a href="#libraries"><span class="toc-section-number">1</span> Libraries</a></li>
+      <li><a href="#simulated-data"><span class="toc-section-number">2</span> Simulated data</a>
+      <ul>
+      <li><a href="#a-simple-example"><span class="toc-section-number">2.1</span> A simple example</a>
+      <ul>
+      <li><a href="#pairwise-multiple-comparisons"><span class="toc-section-number">2.1.1</span> Pairwise multiple comparisons</a></li>
+      <li><a href="#the-mgidi-index"><span class="toc-section-number">2.1.2</span> The MGIDI index</a></li>
+      </ul></li>
+      <li><a href="#a-complex-example"><span class="toc-section-number">2.2</span> A complex example</a>
+      <ul>
+      <li><a href="#pairwise-multiple-comparisons-1"><span class="toc-section-number">2.2.1</span> Pairwise multiple comparisons</a></li>
+      <li><a href="#the-mgidi-index-1"><span class="toc-section-number">2.2.2</span> The MGIDI index</a></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#real-data-example-strawberry"><span class="toc-section-number">3</span> Real data example (Strawberry)</a>
+      <ul>
+      <li><a href="#multivariate-analysis-of-variance"><span class="toc-section-number">3.1</span> Multivariate Analysis of Variance</a></li>
+      <li><a href="#origin-x-cultivar-interaction"><span class="toc-section-number">3.2</span> Origin x cultivar interaction</a>
+      <ul>
+      <li><a href="#plot-the-mgidi-index"><span class="toc-section-number">3.2.1</span> Plot the MGIDI index</a></li>
+      <li><a href="#the-strengths-and-weaknesses-view"><span class="toc-section-number">3.2.2</span> The strengths and weaknesses view</a></li>
+      <li><a href="#selection-differentials"><span class="toc-section-number">3.2.3</span> Selection differentials</a></li>
+      </ul></li>
+      <li><a href="#substrate-main-factor"><span class="toc-section-number">3.3</span> Substrate main factor</a>
+      <ul>
+      <li><a href="#plot-the-mgidi-index-1"><span class="toc-section-number">3.3.1</span> Plot the MGIDI index</a></li>
+      <li><a href="#the-strengths-and-weaknesses-view-1"><span class="toc-section-number">3.3.2</span> The strengths and weaknesses view</a></li>
+      <li><a href="#selection-differentials-1"><span class="toc-section-number">3.3.3</span> Selection differentials</a></li>
+      </ul></li>
+      </ul></li>
+      </ul>
+    </div>
+    <div id="postamble" data-toggle="wy-nav-shift" class="status">
+                </div>
+   </div>
+     
+
+   
+      
+   
+<!-- Don't indent these lines or it will mess pre blocks indentation --> 
+<div id="main">
+<div id="libraries" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Libraries</h1>
+<p>To reproduce the examples of this material, the R packages <a href="https://cran.r-project.org/web/packages/metan/index.html"><code>metan</code></a>, <a href="https://cran.r-project.org/web/packages/rio/index.html"><code>rio</code></a>, <a href="https://cran.r-project.org/web/packages/broom/index.html"><code>broom</code></a>, and <a href="https://cloud.r-project.org/web/packages/purrr/index.html"><code>purrr</code></a> are needed.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(metan)      <span class="co"># MGIDI index</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rio)        <span class="co"># data importation</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)      <span class="co"># convert statistical objects into tidy tibbles</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)      <span class="co"># Manipulate lists</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)  <span class="co"># plots, data manipulation</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra) <span class="co"># html tables</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)    <span class="co"># pairwise multiple comparison</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ExpDes)     <span class="co"># pairwise multiple comparison</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>my_theme <span class="ot">&lt;-</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_gray</span>() <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
+</div>
+<div id="simulated-data" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Simulated data</h1>
+<div id="a-simple-example" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> A simple example</h2>
+<p>Here, we use a simple example with only 5 treatments and 3 traits to show how the MGIDI index can be used even with few traits/treatments.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">g_simula</span>(<span class="at">ngen =</span> <span class="dv">5</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">nrep =</span> <span class="dv">3</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">nvars =</span> <span class="dv">3</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">seed =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">20</span>, <span class="dv">40</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replace_string</span>(GEN, <span class="at">pattern =</span>  <span class="st">&quot;H&quot;</span>, <span class="at">replacement =</span> <span class="st">&quot;T&quot;</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: &#39;gen_eff = 20&#39; recycled for all the 3 traits.</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: &#39;rep_eff = 5&#39; recycled for all the 3 traits.</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: &#39;res_eff = 5&#39; recycled for all the 3 traits.</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: &#39;intercept = 100&#39; recycled for all the 3 traits.</span></span></code></pre></div>
+<div id="pairwise-multiple-comparisons" class="section level3" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Pairwise multiple comparisons</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>v1_mod <span class="ot">&lt;-</span> <span class="fu">aov</span>(V1 <span class="sc">~</span> REP <span class="sc">+</span> GEN, <span class="at">data =</span> df)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>v2_mod <span class="ot">&lt;-</span> <span class="fu">aov</span>(V2 <span class="sc">~</span> REP <span class="sc">+</span> GEN, <span class="at">data =</span> df)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>v3_mod <span class="ot">&lt;-</span> <span class="fu">aov</span>(V3 <span class="sc">~</span> REP <span class="sc">+</span> GEN, <span class="at">data =</span> df)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>anovas <span class="ot">&lt;-</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">v1 =</span> <span class="fu">tidy</span>(v1_mod),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">v2 =</span> <span class="fu">tidy</span>(v2_mod),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">v3 =</span> <span class="fu">tidy</span>(v3_mod)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rbind_fill_id</span>(<span class="at">.id =</span> <span class="st">&quot;Traits&quot;</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>anovas</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Traits"],"name":[1],"type":["chr"],"align":["left"]},{"label":["term"],"name":[2],"type":["chr"],"align":["left"]},{"label":["df"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sumsq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["meansq"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"v1","2":"REP","3":"2","4":"157.9851","5":"78.99254","6":"5.031261","7":"0.0384810049"},{"1":"v1","2":"GEN","3":"4","4":"1438.6159","5":"359.65396","6":"22.907390","7":"0.0001945103"},{"1":"v1","2":"Residuals","3":"8","4":"125.6028","5":"15.70035","6":"NA","7":"NA"},{"1":"v2","2":"REP","3":"2","4":"591.5152","5":"295.75760","6":"11.379334","7":"0.0045760402"},{"1":"v2","2":"GEN","3":"4","4":"1545.8920","5":"386.47300","6":"14.869628","7":"0.0008941099"},{"1":"v2","2":"Residuals","3":"8","4":"207.9261","5":"25.99076","6":"NA","7":"NA"},{"1":"v3","2":"REP","3":"2","4":"132.3803","5":"66.19016","6":"2.457684","7":"0.1472084754"},{"1":"v3","2":"GEN","3":"4","4":"1597.9324","5":"399.48311","6":"14.833070","7":"0.0009016974"},{"1":"v3","2":"Residuals","3":"8","4":"215.4554","5":"26.93192","6":"NA","7":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>v1_means <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(v1_mod, <span class="sc">~</span> GEN)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>v2_means <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(v2_mod, <span class="sc">~</span> GEN)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>v3_means <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(v3_mod, <span class="sc">~</span> GEN)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plots</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(v1_means,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">comparisons =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">CIs =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">&quot;Mean&quot;</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">&quot;Treatments&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(df<span class="sc">$</span>V1)) <span class="sc">+</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  my_theme</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(v2_means,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">comparisons =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">CIs =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">&quot;Mean&quot;</span>,</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">&quot;Treatments&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(df<span class="sc">$</span>V2)) <span class="sc">+</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  my_theme</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> </span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(v3_means,</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">comparisons =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">CIs =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">&quot;Mean&quot;</span>,</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">&quot;Treatments&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(df<span class="sc">$</span>V2)) <span class="sc">+</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  my_theme</span></code></pre></div>
+</div>
+<div id="the-mgidi-index" class="section level3" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> The MGIDI index</h3>
+<p>The MGIDI index is computed with the function <code>mgidi()</code>. The function has the following arguments.</p>
+<ul>
+<li><p><code>.data</code>: An object fitted with the function <code>gafem()</code>, <code>gamem()</code> or a two-way table with BLUPs/means for treatments in each trait (treatments in rows and traits in columns). In the last case, row names must contain the treatments’ names.</p></li>
+<li><p><code>use_data</code>: Define which data to use if <code>.data</code> is an object of class <code>gamem</code>. Defaults to <code>"blup"</code> (the BLUPs for genotypes). Use <code>"pheno"</code> to use phenotypic means instead BLUPs for computing the index.</p></li>
+<li><p><code>SI</code>: An integer (0-100). The selection intensity in percentage of the total number of genotypes/treatments.</p></li>
+<li><p><code>mineval</code>: The minimum value so that an eigenvector is retained in the factor analysis. Defaults to 1.</p></li>
+<li><p><code>ideotype</code>: A vector of length nvar where nvar is the number of variables used to plan the ideotype. Use <code>'h'</code> to indicate the traits in which higher values are desired or <code>'l'</code> to indicate the variables in which lower values are desired. For example, <code>ideotype = c("h, h, h, h, l")</code> will consider that the ideotype has higher values for the first four traits (following the order of columns in <code>.data</code>) and lower values for the last trait. If <code>.data</code> is a model fitted with the functions <code>gafem()</code> or <code>gamem()</code>, the order of the traits will be the declared in the argument <code>resp</code> in those functions.</p></li>
+<li><p><code>use</code>: The method for computing covariances in the presence of missing values. Defaults to <code>complete.obs</code>, i.e., missing values are handled by casewise deletion.</p></li>
+<li><p><code>verbose</code>: If <code>verbose = TRUE</code> (Default) then some results are shown in the console.</p></li>
+</ul>
+<p>In the following example, the MGIDI index is computed with the predicted values from a multivariate analysis of variance model. Three scenarios are shown: (i) for all traits higher values are better; (ii) lower values better for the first two traits and higher values better for the last trait; and (iii) lower values better for all the traits.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>man <span class="ot">&lt;-</span> <span class="fu">manova</span>(<span class="fu">cbind</span>(V1, V2, V3) <span class="sc">~</span> REP <span class="sc">+</span> GEN, <span class="at">data =</span> df)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(man)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="do">##           Df Pillai approx F num Df den Df    Pr(&gt;F)    </span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">## REP        2 1.3052   4.3832      6     14   0.01068 *  </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="do">## GEN        4 2.6178  13.6999     12     24 6.053e-08 ***</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Residuals  8                                            </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># predict the mean values</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># compute a two-way table with genotypes in rows and traits in columns</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>pred_mat <span class="ot">&lt;-</span> </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(man) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TRAT =</span> df<span class="sc">$</span>GEN) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">means_by</span>(TRAT) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_to_rownames</span>(<span class="st">&quot;TRAT&quot;</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co"># higher values for all traits are better</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">mgidi</span>(pred_mat,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>             <span class="at">ideotype =</span> <span class="fu">c</span>(<span class="st">&quot;h, h, h&quot;</span>), <span class="co"># default</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">mineval =</span> <span class="fl">0.5</span>) <span class="co"># retains two factors</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(ind,</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">x.lab =</span> <span class="st">&quot;Treatments&quot;</span>,</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">y.lab =</span> <span class="st">&quot;MGIDI index&quot;</span>,</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">radar =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  my_theme</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>ind<span class="sc">$</span>sel_dif</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["VAR"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Factor"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Xo"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Xs"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["SD"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["SDperc"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["sense"],"name":[7],"type":["chr"],"align":["left"]},{"label":["goal"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"V1","2":"FA1","3":"96.26950","4":"112.6546","5":"16.385116","6":"17.02005","7":"increase","8":"100"},{"1":"V2","2":"FA2","3":"104.42012","4":"106.4057","5":"1.985559","6":"1.90151","7":"increase","8":"100"},{"1":"V3","2":"FA2","3":"99.68644","4":"114.3477","5":"14.661279","6":"14.70740","7":"increase","8":"100"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># lower values for the first two traits</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># higher values for the last </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ind2 <span class="ot">&lt;-</span> <span class="fu">mgidi</span>(pred_mat,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">ideotype =</span> <span class="fu">c</span>(<span class="st">&quot;l, l, h&quot;</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">mineval =</span> <span class="fl">0.5</span>) <span class="co"># retains two factors</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(ind2,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x.lab =</span> <span class="st">&quot;Treatments&quot;</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y.lab =</span> <span class="st">&quot;MGIDI index&quot;</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">radar =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  my_theme</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>ind2<span class="sc">$</span>sel_dif</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["VAR"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Factor"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Xo"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Xs"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["SD"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["SDperc"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["sense"],"name":[7],"type":["chr"],"align":["left"]},{"label":["goal"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"V1","2":"FA1","3":"96.26950","4":"89.48919","5":"-6.780313","6":"-7.043054","7":"decrease","8":"100"},{"1":"V2","2":"FA2","3":"104.42012","4":"88.63557","5":"-15.784548","6":"-15.116385","7":"decrease","8":"100"},{"1":"V3","2":"FA2","3":"99.68644","4":"105.98100","5":"6.294565","6":"6.314365","7":"increase","8":"100"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># lower values for all the traits</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>ind3 <span class="ot">&lt;-</span> <span class="fu">mgidi</span>(pred_mat,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">ideotype =</span>  <span class="fu">c</span>(<span class="st">&quot;l, l, l&quot;</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">mineval =</span> <span class="fl">0.5</span>) <span class="co"># retains two factors</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>p6 <span class="ot">&lt;-</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(ind3,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x.lab =</span> <span class="st">&quot;Treatments&quot;</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y.lab =</span> <span class="st">&quot;MGIDI index&quot;</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">radar =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  my_theme</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>ind3<span class="sc">$</span>sel_dif</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["VAR"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Factor"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Xo"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Xs"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["SD"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["SDperc"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["sense"],"name":[7],"type":["chr"],"align":["left"]},{"label":["goal"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"V1","2":"FA1","3":"96.26950","4":"91.68320","5":"-4.586301","6":"-4.764023","7":"decrease","8":"100"},{"1":"V2","2":"FA2","3":"104.42012","4":"98.91541","5":"-5.504715","6":"-5.271699","7":"decrease","8":"100"},{"1":"V3","2":"FA2","3":"99.68644","4":"85.42302","5":"-14.263417","6":"-14.308283","7":"decrease","8":"100"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange_ggplot</span>((p1 <span class="sc">+</span> p2 <span class="sc">+</span> p3),</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>               (p4 <span class="sc">+</span> p5 <span class="sc">+</span> p6),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">heights =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="dv">1</span>),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">tag_levels =</span> <span class="st">&quot;a&quot;</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">guides =</span> <span class="st">&quot;collect&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-6"></span>
+<img src="code_files/figure-html/unnamed-chunk-6-1.png" alt="Pairwise comparisons for V1 (a), V2 (b), V3 (c), and the MGIDI index for three selection strategies, namely, desired higher values for all traits (c), lower values for V1 and V2 and higher values for V3 (d), and lower values for all traits (e)." width="960" />
+<p class="caption">
+Figure 2.1: Pairwise comparisons for V1 (a), V2 (b), V3 (c), and the MGIDI index for three selection strategies, namely, desired higher values for all traits (c), lower values for V1 and V2 and higher values for V3 (d), and lower values for all traits (e).
+</p>
+</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;figs/fig1.pdf&quot;</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">4</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="a-complex-example" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> A complex example</h2>
+<div id="pairwise-multiple-comparisons-1" class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Pairwise multiple comparisons</h3>
+<p>In the following example, we will simulate data on 10 traits accessed in 75 treatments using the function <code>g_simula()</code> from <code>metan</code> package.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate data</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df_g <span class="ot">&lt;-</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">g_simula</span>(<span class="at">ngen =</span> <span class="dv">75</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">nrep =</span> <span class="dv">3</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">nvars =</span> <span class="dv">10</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">seed =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: &#39;gen_eff = 20&#39; recycled for all the 10 traits.</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: &#39;rep_eff = 5&#39; recycled for all the 10 traits.</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: &#39;res_eff = 5&#39; recycled for all the 10 traits.</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: &#39;intercept = 100&#39; recycled for all the 10 traits.</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># data in a &#39;long&#39; format</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>df_ge_long <span class="ot">&lt;-</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(df_g,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>               <span class="at">cols =</span> <span class="sc">-</span><span class="fu">c</span>(GEN<span class="sc">:</span>REP),</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;trait&quot;</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co"># compute an ANOVA for each trait</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>models_ge <span class="ot">&lt;-</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  df_ge_long <span class="sc">%&gt;%</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(trait) <span class="sc">%&gt;%</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">doo</span>(<span class="sc">~</span><span class="fu">aov</span>(value <span class="sc">~</span> REP <span class="sc">+</span> GEN, <span class="at">data =</span> .))</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain an anova table</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>anovas_ge <span class="ot">&lt;-</span> models_ge<span class="sc">$</span>data <span class="sc">%&gt;%</span> <span class="fu">map_dfr</span>(<span class="sc">~</span>.x <span class="sc">%&gt;%</span> <span class="fu">tidy</span>(), <span class="at">.id =</span> <span class="st">&quot;TRAIT&quot;</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>anovas_ge <span class="sc">%&gt;%</span> <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">&quot;GEN&quot;</span>)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["TRAIT"],"name":[1],"type":["chr"],"align":["left"]},{"label":["term"],"name":[2],"type":["chr"],"align":["left"]},{"label":["df"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sumsq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["meansq"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"GEN","3":"74","4":"25647.46","5":"346.5873","6":"14.04936","7":"1.358273e-40"},{"1":"2","2":"GEN","3":"74","4":"24424.42","5":"330.0598","6":"16.27940","7":"1.646452e-44"},{"1":"3","2":"GEN","3":"74","4":"36430.47","5":"492.3037","6":"18.34643","7":"9.215049e-48"},{"1":"4","2":"GEN","3":"74","4":"30969.67","5":"418.5090","6":"16.34424","7":"1.286586e-44"},{"1":"5","2":"GEN","3":"74","4":"32455.34","5":"438.5857","6":"17.55374","7":"1.490887e-46"},{"1":"6","2":"GEN","3":"74","4":"31832.72","5":"430.1718","6":"17.19785","7":"5.385349e-46"},{"1":"7","2":"GEN","3":"74","4":"34062.23","5":"460.3004","6":"19.45586","7":"2.211802e-49"},{"1":"8","2":"GEN","3":"74","4":"31728.37","5":"428.7617","6":"17.66977","7":"9.854801e-47"},{"1":"9","2":"GEN","3":"74","4":"33944.93","5":"458.7153","6":"16.99278","7":"1.140318e-45"},{"1":"10","2":"GEN","3":"74","4":"34732.72","5":"469.3611","6":"18.18617","7":"1.604367e-47"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>All traits with significant treatment effect. In this case, It would be reasonable to include a pairwise comparasion. We could obtain all the P-values using <code>pwpm()</code>, and look at each one of the 2775 (<span class="math inline">\(75!/ (2! \times (75 - 2)!\)</span>) comparisions individually.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># example for V1</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>model_v1 <span class="ot">&lt;-</span> models_ge<span class="sc">$</span>data[[<span class="dv">1</span>]]</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>means_v1 <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(model_v1, <span class="sc">~</span> GEN)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>pairs <span class="ot">&lt;-</span> <span class="fu">pwpm</span>(means_v1)</span></code></pre></div>
+<p>Definetively, this is not the better option. Another way to depict comparisons graphically via the comparisons argument in <code>plot.emm()</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>p7 <span class="ot">&lt;-</span> <span class="fu">plot</span>(means_v1, <span class="at">comparisons =</span> <span class="cn">TRUE</span>, <span class="at">CIs =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>p7</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
+<img src="code_files/figure-html/unnamed-chunk-9-1.png" alt="Pairwise comparisons based on Tukey adjustment" width="768" />
+<p class="caption">
+Figure 2.2: Pairwise comparisons based on Tukey adjustment
+</p>
+</div>
+<p>The red arrows are for the comparisons among genotype’s means. If an arrow from one mean overlaps an arrow from another group, the difference is not “significant,” based on the adjust setting (which defaults to “tukey”).</p>
+<p>An alternative is the <a href="https://cran.r-project.org/web/packages/emmeans/vignettes/comparisons.html">Pairwise P-value plot</a> displaying all the P-values in pairwise comparisons. Each comparison is associated with a vertical line segment that joins the scale positions of the two means being compared, and whose horizontal position is determined by the P-value of that comparison.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># shows only &#39;significant&#39; (P-value &lt; 0.05)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>p8 <span class="ot">&lt;-</span> <span class="fu">pwpp</span>(means_v1) <span class="sc">+</span> <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="do">## replace the existing scale.</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>p8</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: Removed 4350 rows containing missing values (geom_point).</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: Removed 4350 rows containing missing values (geom_segment).</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: Removed 5550 rows containing missing values (geom_point).</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: Removed 75 rows containing missing values (geom_label).</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: Removed 5550 rows containing missing values (geom_point).</span></span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
+<img src="code_files/figure-html/unnamed-chunk-10-1.png" alt="Pairwise P-value plot" width="768" />
+<p class="caption">
+Figure 2.3: Pairwise P-value plot
+</p>
+</div>
+<p>Another way to depict comparisons is by compact letter displays, whereby two means sharing one or more grouping symbols are not “significantly” different. Here, I use the package <a href="https://www.researchgate.net/publication/268443974_ExpDes_an_R_package_for_ANOVA_and_experimental_designs"><code>ExpDes</code></a> to generate compact letter displays based on Tukey test.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(df_g,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">rbd</span>(GEN, REP, V1))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------------------</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Analysis of Variance Table</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------------------</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">##             DF      SS     MS     Fc      Pr&gt;Fc</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Treatament  74 25647.5 346.59 14.049 0.0000e+00</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Block        2  1702.6 851.29 34.508 4.9993e-13</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Residuals  148  3651.1  24.67                  </span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Total      224 31001.1                         </span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------------------</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="do">## CV = 4.84 %</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------------------</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Shapiro-Wilk normality test</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="do">## p-value:  0.7118349 </span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="do">## According to Shapiro-Wilk normality test at 5% of significance, residuals can be considered normal.</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------------------</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------------------</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Homogeneity of variances test</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="do">## p-value:  0.2089247 </span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="do">## According to the test of oneillmathews at 5% of significance, the variances can be considered homocedastic.</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------------------</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Tukey&#39;s test</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------------------</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="do">## Groups Treatments Means</span></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a><span class="do">## a     H18     124.8743 </span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="do">## ab    H6      123.1677 </span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="do">## abc   H4      120.4282 </span></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a><span class="do">## abcd      H7      118.9263 </span></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="do">## abcde     H41     118.4192 </span></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="do">## abcde     H21     117.7905 </span></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a><span class="do">## abcde     H29     117.6643 </span></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdef    H72     116.3631 </span></span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdef    H68     116.0823 </span></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefg   H61     115.7105 </span></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefgh      H70     115.557 </span></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghi     H52     114.7544 </span></span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghi     H46     114.4275 </span></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghij    H43     114.35 </span></span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijk   H23     113.879 </span></span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijk   H8      113.6739 </span></span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijk   H35     113.6635 </span></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijkl      H15     112.1477 </span></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijklm     H17     111.4147 </span></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijklmn    H59     110.5309 </span></span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijklmno   H50     110.3115 </span></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijklmno   H42     110.2469 </span></span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijklmnop      H49     109.606 </span></span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijklmnop      H13     109.3848 </span></span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijklmnop      H36     109.2611 </span></span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijklmnop      H37     109.0755 </span></span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijklmnop      H44     108.2284 </span></span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a><span class="do">## abcdefghijklmnop      H20     108.1288 </span></span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a><span class="do">##  bcdefghijklmnopq     H9      106.4422 </span></span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a><span class="do">##   cdefghijklmnopq     H3      105.7786 </span></span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a><span class="do">##   cdefghijklmnopqr    H16     105.3797 </span></span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a><span class="do">##   cdefghijklmnopqr    H39     105.2835 </span></span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a><span class="do">##   cdefghijklmnopqrs   H32     105.0038 </span></span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a><span class="do">##   cdefghijklmnopqrst      H45     104.1533 </span></span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a><span class="do">##   cdefghijklmnopqrstu     H65     103.2584 </span></span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a><span class="do">##    defghijklmnopqrstu     H58     102.6606 </span></span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a><span class="do">##    defghijklmnopqrstuv    H19     102.0991 </span></span>
+<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a><span class="do">##     efghijklmnopqrstuvw   H75     101.5155 </span></span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a><span class="do">##     efghijklmnopqrstuvw   H48     101.1985 </span></span>
+<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a><span class="do">##     efghijklmnopqrstuvw   H67     101.1385 </span></span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a><span class="do">##      fghijklmnopqrstuvw   H63     100.2952 </span></span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a><span class="do">##      fghijklmnopqrstuvwx      H51     100.0912 </span></span>
+<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a><span class="do">##      fghijklmnopqrstuvwx      H31     100.0166 </span></span>
+<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a><span class="do">##       ghijklmnopqrstuvwxy     H53     98.64119 </span></span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a><span class="do">##       ghijklmnopqrstuvwxy     H28     98.48811 </span></span>
+<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a><span class="do">##        hijklmnopqrstuvwxy     H71     98.32443 </span></span>
+<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a><span class="do">##         ijklmnopqrstuvwxy     H2      97.9815 </span></span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a><span class="do">##         ijklmnopqrstuvwxy     H33     97.9539 </span></span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a><span class="do">##          jklmnopqrstuvwxy     H74     97.00687 </span></span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a><span class="do">##           klmnopqrstuvwxy     H40     96.92996 </span></span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a><span class="do">##           klmnopqrstuvwxy     H60     96.89532 </span></span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a><span class="do">##           klmnopqrstuvwxy     H57     96.53602 </span></span>
+<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a><span class="do">##            lmnopqrstuvwxy     H26     96.06602 </span></span>
+<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a><span class="do">##            lmnopqrstuvwxy     H14     95.71283 </span></span>
+<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a><span class="do">##            lmnopqrstuvwxy     H73     94.88222 </span></span>
+<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a><span class="do">##             mnopqrstuvwxy     H64     94.57512 </span></span>
+<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a><span class="do">##             mnopqrstuvwxy     H30     94.44762 </span></span>
+<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a><span class="do">##              nopqrstuvwxy     H11     93.62437 </span></span>
+<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a><span class="do">##              nopqrstuvwxy     H25     93.37715 </span></span>
+<span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a><span class="do">##              nopqrstuvwxy     H1      93.35092 </span></span>
+<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a><span class="do">##               opqrstuvwxy     H66     93.14729 </span></span>
+<span id="cb15-90"><a href="#cb15-90" aria-hidden="true" tabindex="-1"></a><span class="do">##                pqrstuvwxy     H54     92.68082 </span></span>
+<span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a><span class="do">##                 qrstuvwxy     H62     90.35282 </span></span>
+<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a><span class="do">##                 qrstuvwxy     H47     90.27258 </span></span>
+<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a><span class="do">##                 qrstuvwxy     H55     89.88984 </span></span>
+<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a><span class="do">##                 qrstuvwxy     H24     89.56167 </span></span>
+<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a><span class="do">##                  rstuvwxy     H22     88.295 </span></span>
+<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a><span class="do">##                   stuvwxy     H5      87.88859 </span></span>
+<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a><span class="do">##                    tuvwxy     H56     87.59956 </span></span>
+<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a><span class="do">##                     uvwxy     H38     86.6621 </span></span>
+<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a><span class="do">##                     uvwxy     H12     86.58902 </span></span>
+<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a><span class="do">##                      vwxy     H34     85.23154 </span></span>
+<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a><span class="do">##                       wxy     H10     84.31629 </span></span>
+<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a><span class="do">##                        xy     H27     82.75361 </span></span>
+<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a><span class="do">##                         y     H69     82.66512 </span></span>
+<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------------------</span></span></code></pre></div>
+<p>Now, we simply choose one of the above options and apply it to the other nine traits.</p>
+</div>
+<div id="the-mgidi-index-1" class="section level3" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> The MGIDI index</h3>
+<p>In the following example, the MGIDI index is computed with the predicted values from a multivariate analysis of variance model. Three scenarios are shown: (i) for all traits higher values are better; (ii) higher values better for the first seven traits and lower values better for the last three traits; and (iii) lower values better for all the traits.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>man_complex <span class="ot">&lt;-</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">manova</span>(<span class="fu">cbind</span>(V1,V2,V3,V4,V5,V6,V7,V8,V9,V10) <span class="sc">~</span> REP <span class="sc">+</span> GEN,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">data =</span> df_g)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(man_complex)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">##            Df Pillai approx F num Df den Df    Pr(&gt;F)    </span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">## REP         2 1.3483   28.967     20    280 &lt; 2.2e-16 ***</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="do">## GEN        74 8.8813   15.878    740   1480 &lt; 2.2e-16 ***</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Residuals 148                                            </span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"># generate a two-way table with predicted values in rows and traits in columns</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>pred_complex <span class="ot">&lt;-</span> <span class="fu">cbind</span>(df_g[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="fu">predict</span>(man_complex))</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>mat_g <span class="ot">&lt;-</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  pred_complex <span class="sc">%&gt;%</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">means_by</span>(GEN) <span class="sc">%&gt;%</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_to_rownames</span>(<span class="st">&quot;GEN&quot;</span>)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="co"># higher values for all traits are better</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>ind4 <span class="ot">&lt;-</span> <span class="fu">mgidi</span>(mat_g,</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>              <span class="at">ideotype =</span> <span class="fu">rep</span>(<span class="st">&quot;h&quot;</span>, <span class="dv">10</span>), <span class="co"># default</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>p9 <span class="ot">&lt;-</span> <span class="fu">plot</span>(ind4, <span class="at">arrange.label =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>p9</span></code></pre></div>
+<p><img src="code_files/figure-html/unnamed-chunk-12-1.png" width="768" /></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ind4<span class="sc">$</span>sel_dif</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["VAR"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Factor"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Xo"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Xs"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["SD"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["SDperc"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["sense"],"name":[7],"type":["chr"],"align":["left"]},{"label":["goal"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"V9","2":"FA1","3":"100.68580","4":"109.6437","5":"8.957874","6":"8.896860","7":"increase","8":"100"},{"1":"V10","2":"FA1","3":"98.75052","4":"102.8260","5":"4.075496","6":"4.127063","7":"increase","8":"100"},{"1":"V4","2":"FA2","3":"102.58159","4":"110.7252","5":"8.143578","6":"7.938635","7":"increase","8":"100"},{"1":"V7","2":"FA2","3":"100.52844","4":"112.5267","5":"11.998269","6":"11.935198","7":"increase","8":"100"},{"1":"V3","2":"FA3","3":"97.36450","4":"102.0655","5":"4.700970","6":"4.828218","7":"increase","8":"100"},{"1":"V5","2":"FA3","3":"101.59821","4":"108.6721","5":"7.073870","6":"6.962593","7":"increase","8":"100"},{"1":"V6","2":"FA4","3":"101.89782","4":"107.7901","5":"5.892289","6":"5.782547","7":"increase","8":"100"},{"1":"V1","2":"FA5","3":"102.60109","4":"108.3606","5":"5.759497","6":"5.613485","7":"increase","8":"100"},{"1":"V2","2":"FA6","3":"101.40586","4":"113.7199","5":"12.314004","6":"12.143286","7":"increase","8":"100"},{"1":"V8","2":"FA6","3":"101.18854","4":"102.7159","5":"1.527401","6":"1.509460","7":"increase","8":"100"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># higher values desired for the first 7 traits</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># lower values desired for the last 3 traits</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>ind5 <span class="ot">&lt;-</span> <span class="fu">mgidi</span>(mat_g,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">ideotype =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;h&quot;</span>, <span class="dv">7</span>), <span class="fu">rep</span>(<span class="st">&quot;l&quot;</span>, <span class="dv">3</span>)),</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>p10 <span class="ot">&lt;-</span> <span class="fu">plot</span>(ind5, <span class="at">arrange.label =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>p10</span></code></pre></div>
+<p><img src="code_files/figure-html/unnamed-chunk-12-2.png" width="768" /></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ind5<span class="sc">$</span>sel_dif</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["VAR"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Factor"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Xo"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Xs"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["SD"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["SDperc"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["sense"],"name":[7],"type":["chr"],"align":["left"]},{"label":["goal"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"V9","2":"FA1","3":"100.68580","4":"98.02623","5":"-2.659572","6":"-2.641457","7":"decrease","8":"100"},{"1":"V10","2":"FA1","3":"98.75052","4":"94.26037","5":"-4.490144","6":"-4.546957","7":"decrease","8":"100"},{"1":"V4","2":"FA2","3":"102.58159","4":"104.66029","5":"2.078702","6":"2.026389","7":"increase","8":"100"},{"1":"V7","2":"FA2","3":"100.52844","4":"104.47666","5":"3.948220","6":"3.927466","7":"increase","8":"100"},{"1":"V3","2":"FA3","3":"97.36450","4":"99.09245","5":"1.727955","6":"1.774728","7":"increase","8":"100"},{"1":"V5","2":"FA3","3":"101.59821","4":"110.66324","5":"9.065029","6":"8.922430","7":"increase","8":"100"},{"1":"V6","2":"FA4","3":"101.89782","4":"111.49193","5":"9.594112","6":"9.415424","7":"increase","8":"100"},{"1":"V1","2":"FA5","3":"102.60109","4":"112.34449","5":"9.743395","6":"9.496385","7":"increase","8":"100"},{"1":"V2","2":"FA6","3":"101.40586","4":"105.82552","5":"4.419659","6":"4.358386","7":"increase","8":"100"},{"1":"V8","2":"FA6","3":"101.18854","4":"98.14766","5":"-3.040878","6":"-3.005160","7":"decrease","8":"100"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># lower values for all the traits</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>ind6 <span class="ot">&lt;-</span> <span class="fu">mgidi</span>(mat_g,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">ideotype =</span>  <span class="fu">rep</span>(<span class="st">&quot;l&quot;</span>, <span class="dv">10</span>), <span class="co"># default</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>p11 <span class="ot">&lt;-</span> <span class="fu">plot</span>(ind6, <span class="at">arrange.label =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>p11</span></code></pre></div>
+<p><img src="code_files/figure-html/unnamed-chunk-12-3.png" width="768" /></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ind6<span class="sc">$</span>sel_dif</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["VAR"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Factor"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Xo"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Xs"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["SD"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["SDperc"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["sense"],"name":[7],"type":["chr"],"align":["left"]},{"label":["goal"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"V9","2":"FA1","3":"100.68580","4":"93.91809","5":"-6.767708","6":"-6.721611","7":"decrease","8":"100"},{"1":"V10","2":"FA1","3":"98.75052","4":"97.06543","5":"-1.685087","6":"-1.706408","7":"decrease","8":"100"},{"1":"V4","2":"FA2","3":"102.58159","4":"96.09168","5":"-6.489911","6":"-6.326585","7":"decrease","8":"100"},{"1":"V7","2":"FA2","3":"100.52844","4":"98.08901","5":"-2.439430","6":"-2.426607","7":"decrease","8":"100"},{"1":"V3","2":"FA3","3":"97.36450","4":"90.31594","5":"-7.048554","6":"-7.239348","7":"decrease","8":"100"},{"1":"V5","2":"FA3","3":"101.59821","4":"91.01858","5":"-10.579628","6":"-10.413203","7":"decrease","8":"100"},{"1":"V6","2":"FA4","3":"101.89782","4":"98.96556","5":"-2.932258","6":"-2.877646","7":"decrease","8":"100"},{"1":"V1","2":"FA5","3":"102.60109","4":"100.07044","5":"-2.530657","6":"-2.466501","7":"decrease","8":"100"},{"1":"V2","2":"FA6","3":"101.40586","4":"88.23508","5":"-13.170784","6":"-12.988188","7":"decrease","8":"100"},{"1":"V8","2":"FA6","3":"101.18854","4":"96.38561","5":"-4.802925","6":"-4.746511","7":"decrease","8":"100"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<div id="real-data-example-strawberry" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Real data example (Strawberry)</h1>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">import</span>(<span class="st">&quot;https://bit.ly/strawberry_data&quot;</span>, <span class="at">setclass =</span> <span class="st">&quot;tbl&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  metan<span class="sc">::</span><span class="fu">as_factor</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="do">## tibble [64 x 26] (S3: tbl_df/tbl/data.frame)</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ REP   : Factor w/ 4 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;: 1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ SUB   : Factor w/ 4 levels &quot;S1&quot;,&quot;S2&quot;,&quot;S3&quot;,..: 1 1 1 1 2 2 2 2 3 3 ...</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ CUL   : Factor w/ 2 levels &quot;ALB&quot;,&quot;CAM&quot;: 2 2 1 1 2 2 1 1 2 2 ...</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ ORI   : Factor w/ 2 levels &quot;IMP&quot;,&quot;NAC&quot;: 2 1 2 1 2 1 2 1 2 1 ...</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ NNCF  : num [1:64] 3.88 6.13 1.2 2.86 4.67 ...</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ WNCF  : num [1:64] 21.4 36.2 10.3 50.1 41.1 ...</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ AWNCF : num [1:64] 5.51 5.92 8.62 17.55 8.81 ...</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ WUE   : num [1:64] 93.4 125.5 136.3 94.2 190.5 ...</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ NDBF  : int [1:64] 82 61 69 44 86 61 71 44 54 55 ...</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ NDFF  : int [1:64] 92 83 82 70 92 89 82 70 69 70 ...</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ NDBH  : int [1:64] 81 82 78 69 108 85 88 72 74 79 ...</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ PHYL  : num [1:64] 162 185 189 180 124 ...</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ TA    : num [1:64] 1.38 1.72 1.77 1.4 1.51 1.34 1.47 1.49 1.33 1.6 ...</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ NCF   : num [1:64] 28.1 24 19.6 24.9 12.3 ...</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ TNF   : num [1:64] 32 30.1 20.8 27.7 17 ...</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ WCF   : num [1:64] 425 307 330 372 148 ...</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ TWF   : num [1:64] 446 343 340 423 189 ...</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ AWCF  : num [1:64] 15.1 12.8 16.8 15 12 ...</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ OAWF  : num [1:64] 13.9 11.4 16.4 15.2 11.1 ...</span></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ FY    : num [1:64] 33469 25713 25509 31698 14170 ...</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ TSS   : num [1:64] 6.77 8.27 7.25 8.35 7.2 7.13 7.45 8.4 6.8 7.88 ...</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ TSS_TA: num [1:64] 4.89 4.79 4.1 5.98 4.76 5.34 5.08 5.64 5.13 4.92 ...</span></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ FIRM  : num [1:64] 1.53 1.95 2.07 1.93 1.73 1.92 1.71 1.99 0.95 1.69 ...</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ L     : num [1:64] 57 48.7 55.2 53.2 53.4 ...</span></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ CHROMA: num [1:64] 40.5 47.1 46 47 43.7 ...</span></span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a><span class="do">##  $ H     : num [1:64] 42.4 40.7 43.2 42.7 42.2 ...</span></span></code></pre></div>
+<div id="multivariate-analysis-of-variance" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Multivariate Analysis of Variance</h2>
+<p>The function <code>manova()</code> computes a multivariate analysis of variance <code>df</code>.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>man_straw <span class="ot">&lt;-</span> <span class="fu">manova</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(NNCF,WNCF,AWNCF,WUE,NDBF,NDFF,NDBH,PHYL,TA,NCF,TNF</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>        ,WCF, TWF,AWCF,OAWF,FY,TSS,TSS_TA,FIRM,L,CHROMA,H) <span class="sc">~</span> SUB<span class="sc">*</span>ORI<span class="sc">*</span>CUL, <span class="at">data =</span> df)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(man_straw, <span class="at">intercept =</span>  <span class="cn">TRUE</span>)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["term"],"name":[1],"type":["chr"],"align":["left"]},{"label":["df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["pillai"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["statistic"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["num.df"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["den.df"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["p.value"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"(Intercept)","2":"1","3":"0.9998834","4":"1.052294e+04","5":"22","6":"27","7":"1.196212e-47"},{"1":"SUB","2":"3","3":"1.8094859","4":"2.003531e+00","5":"66","6":"87","7":"1.227704e-03"},{"1":"ORI","2":"1","3":"0.8552084","4":"7.248860e+00","5":"22","6":"27","7":"1.662083e-06"},{"1":"CUL","2":"1","3":"0.9229459","4":"1.470014e+01","5":"22","6":"27","7":"6.700664e-10"},{"1":"SUB:ORI","2":"3","3":"1.2258411","4":"9.107873e-01","5":"66","6":"87","7":"6.524511e-01"},{"1":"SUB:CUL","2":"3","3":"1.5229604","4":"1.359164e+00","5":"66","6":"87","7":"8.975402e-02"},{"1":"ORI:CUL","2":"1","3":"0.6915759","4":"2.751900e+00","5":"22","6":"27","7":"6.723772e-03"},{"1":"SUB:ORI:CUL","2":"3","3":"1.3390339","4":"1.062689e+00","5":"66","6":"87","7":"3.922551e-01"},{"1":"Residuals","2":"48","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Since the only significant interaction was ORI:CUL, we will use the MGIDI index to analyze the interaction term and the main effect of substrat. First, the predicted values are obtained with <code>predict()</code>.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the predicted values</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>pred_vals <span class="ot">&lt;-</span> <span class="fu">cbind</span>(df[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], <span class="fu">predict</span>(man_straw))</span></code></pre></div>
+</div>
+<div id="origin-x-cultivar-interaction" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Origin x cultivar interaction</h2>
+<p>The MGIDI index can be computed either using a model of class <code>gamem</code> or <code>gafem</code>, or by using a two-way table. In our example, we create a two-way table with the predicted values for each treatment (factor combinations) in rows and traits in columns.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute a two-wat table with means by origin and cultivar</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>df_ori_cul <span class="ot">&lt;-</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  pred_vals <span class="sc">%&gt;%</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">means_by</span>(ORI, CUL) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">concatenate</span>(ORI, CUL, <span class="at">new_var =</span> TRAT, <span class="at">.after =</span> CUL) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_cols</span>(ORI, CUL) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round_cols</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_to_rownames</span>(<span class="st">&quot;TRAT&quot;</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>df_ori_cul</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["NNCF"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["WNCF"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["AWNCF"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["WUE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["NDBF"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["NDFF"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["NDBH"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["PHYL"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["TA"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["NCF"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["TNF"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["WCF"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["TWF"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["AWCF"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["OAWF"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["FY"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["TSS"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["TSS_TA"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["FIRM"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["L"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["CHROMA"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["H"],"name":[22],"type":["dbl"],"align":["right"]}],"data":[{"1":"6.35","2":"59.71","3":"9.22","4":"113.58","5":"43.75","6":"63.31","7":"64.25","8":"163.86","9":"1.55","10":"21.22","11":"27.53","12":"332.48","13":"391.70","14":"15.53","15":"14.15","16":"29377.43","17":"8.06","18":"5.29","19":"1.81","20":"55.62","21":"44.98","22":"43.21","_rn_":"IMP_ALB"},{"1":"9.04","2":"80.28","3":"8.43","4":"122.24","5":"58.12","6":"80.38","7":"77.94","8":"142.39","9":"1.43","10":"25.11","11":"34.15","12":"335.91","13":"416.06","14":"13.13","15":"11.99","16":"31214.03","17":"7.38","18":"5.31","19":"1.68","20":"50.88","21":"46.93","22":"42.24","_rn_":"IMP_CAM"},{"1":"4.07","2":"43.83","3":"9.13","4":"139.42","5":"62.75","6":"77.81","7":"82.06","8":"198.56","9":"1.55","10":"18.79","11":"22.86","12":"307.38","13":"351.21","14":"16.24","15":"15.15","16":"26340.74","17":"7.55","18":"4.94","19":"1.64","20":"56.51","21":"43.44","22":"44.33","_rn_":"NAC_ALB"},{"1":"9.36","2":"77.61","3":"8.17","4":"88.10","5":"66.19","6":"83.56","7":"86.94","8":"153.01","9":"1.15","10":"28.76","11":"38.12","12":"458.50","13":"491.95","14":"14.48","15":"12.86","16":"36896.05","17":"6.73","18":"6.03","19":"1.55","20":"56.22","21":"43.04","22":"42.52","_rn_":"NAC_CAM"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>(ideotype_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;l&quot;</span>, <span class="dv">9</span>), <span class="fu">rep</span>(<span class="st">&quot;h&quot;</span>, <span class="dv">13</span>)))</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] &quot;l&quot; &quot;l&quot; &quot;l&quot; &quot;l&quot; &quot;l&quot; &quot;l&quot; &quot;l&quot; &quot;l&quot; &quot;l&quot; &quot;h&quot; &quot;h&quot; &quot;h&quot; &quot;h&quot; &quot;h&quot; &quot;h&quot; &quot;h&quot; &quot;h&quot; &quot;h&quot; &quot;h&quot;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [20] &quot;h&quot; &quot;h&quot; &quot;h&quot;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>mgidi_cul_ori <span class="ot">&lt;-</span> </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mgidi</span>(df_ori_cul,                 <span class="co"># a two-way table</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">ideotype =</span> ideotype_vector, <span class="co"># ideotype vector</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">SI =</span> <span class="dv">50</span>)                    <span class="co"># select two treatments</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Principal Component Analysis</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 22 x 4</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="do">##    PC    Eigenvalues `Variance (%)` `Cum. variance (%)`</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;chr&gt;       &lt;dbl&gt;          &lt;dbl&gt;               &lt;dbl&gt;</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  1 PC1         14.2            64.4                64.4</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  2 PC2          5.24           23.8                88.2</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  3 PC3          2.58           11.8               100  </span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  4 PC4          0               0                 100  </span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  5 PC5          0               0                 100  </span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  6 PC6          0               0                 100  </span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a><span class="do">##  7 PC7          0               0                 100  </span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a><span class="do">##  8 PC8          0               0                 100  </span></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="do">##  9 PC9          0               0                 100  </span></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 PC10         0               0                 100  </span></span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a><span class="do">## # ... with 12 more rows</span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a><span class="do">## Factor Analysis - factorial loadings after rotation-</span></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 22 x 6</span></span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a><span class="do">##    VAR     FA1   FA2   FA3 Communality Uniquenesses</span></span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a><span class="do">##  1 NNCF  -0.72 -0.67 -0.17           1            0</span></span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a><span class="do">##  2 WNCF  -0.65 -0.75 -0.14           1            0</span></span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a><span class="do">##  3 AWNCF  0.63  0.49  0.6            1            0</span></span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a><span class="do">##  4 WUE    1     0.04  0.03           1            0</span></span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a><span class="do">##  5 NDBF  -0.11  0.07 -0.99           1            0</span></span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a><span class="do">##  6 NDFF  -0.16 -0.24 -0.96           1            0</span></span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a><span class="do">##  7 NDBH  -0.17  0.07 -0.98           1            0</span></span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a><span class="do">##  8 PHYL   0.6   0.79 -0.12           1            0</span></span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a><span class="do">##  9 TA     0.84  0.1   0.54           1            0</span></span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 NCF    0.84  0.42  0.35           1            0</span></span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a><span class="do">## # ... with 12 more rows</span></span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a><span class="do">## Comunalit Mean: 1 </span></span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a><span class="do">## Selection differential </span></span>
+<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 22 x 8</span></span>
+<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a><span class="do">##    VAR    Factor       Xo       Xs        SD  SDperc sense     goal</span></span>
+<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;</span></span>
+<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a><span class="do">##  1 NNCF   FA1        7.20     7.86    0.650    9.02  decrease     0</span></span>
+<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a><span class="do">##  2 AWNCF  FA1        8.74     8.70   -0.0425  -0.486 decrease   100</span></span>
+<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a><span class="do">##  3 WUE    FA1      116.     101.    -15.0    -12.9   decrease   100</span></span>
+<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a><span class="do">##  4 TA     FA1        1.42     1.35   -0.0700  -4.93  decrease   100</span></span>
+<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a><span class="do">##  5 NCF    FA1       23.5     25.0     1.52     6.48  increase   100</span></span>
+<span id="cb26-57"><a href="#cb26-57" aria-hidden="true" tabindex="-1"></a><span class="do">##  6 TNF    FA1       30.7     32.8     2.16     7.04  increase   100</span></span>
+<span id="cb26-58"><a href="#cb26-58" aria-hidden="true" tabindex="-1"></a><span class="do">##  7 WCF    FA1      359.     395.     36.9     10.3   increase   100</span></span>
+<span id="cb26-59"><a href="#cb26-59" aria-hidden="true" tabindex="-1"></a><span class="do">##  8 TWF    FA1      413.     442.     29.1      7.05  increase   100</span></span>
+<span id="cb26-60"><a href="#cb26-60" aria-hidden="true" tabindex="-1"></a><span class="do">##  9 FY     FA1    30957.   33137.   2180.       7.04  increase   100</span></span>
+<span id="cb26-61"><a href="#cb26-61" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 TSS_TA FA1        5.39     5.66    0.268    4.96  increase   100</span></span>
+<span id="cb26-62"><a href="#cb26-62" aria-hidden="true" tabindex="-1"></a><span class="do">## # ... with 12 more rows</span></span>
+<span id="cb26-63"><a href="#cb26-63" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------------------------</span></span>
+<span id="cb26-64"><a href="#cb26-64" aria-hidden="true" tabindex="-1"></a><span class="do">## Selected genotypes</span></span>
+<span id="cb26-65"><a href="#cb26-65" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb26-66"><a href="#cb26-66" aria-hidden="true" tabindex="-1"></a><span class="do">## IMP_ALB NAC_CAM</span></span>
+<span id="cb26-67"><a href="#cb26-67" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span></code></pre></div>
+<div id="plot-the-mgidi-index" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Plot the MGIDI index</h3>
+<p>The radar plot with the treatment ranking based on the MGIDI index is created with the S3 method <code>plot</code>. The argument <code>type</code> controls which plot is created.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>p_ind_cul_ori <span class="ot">&lt;-</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(mgidi_cul_ori,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">SI =</span> <span class="dv">50</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">radar =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x.lab =</span> <span class="st">&quot;Origin x cultivar combination&quot;</span>,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y.lab =</span> <span class="st">&quot;MGIDI index&quot;</span>) <span class="sc">+</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_gray</span>() <span class="sc">+</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+</div>
+<div id="the-strengths-and-weaknesses-view" class="section level3" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> The strengths and weaknesses view</h3>
+<p>In the following code we obtain the contribution of each factor on the MGIDI value of all treatments. To do that, we use the argument <code>type = "contribution"</code>, and <code>genotypes = "all"</code> to show the contribution of all treatments in our case. By default, contribution plot shows only the selected treatments. in this case,</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>p_cont_cul_ori <span class="ot">&lt;-</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(mgidi_cul_ori,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">type =</span> <span class="st">&quot;contribution&quot;</span>, <span class="co"># Get the proportion plot</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">genotypes =</span> <span class="st">&quot;all&quot;</span>, <span class="co"># All treatments (selected treatments are plotted by default)</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co"># save the plot</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange_ggplot</span>(p_ind_cul_ori, p_cont_cul_ori,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">ncol =</span> <span class="dv">1</span>,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">tag_levels =</span> <span class="st">&quot;a&quot;</span>)</span></code></pre></div>
+<p><img src="code_files/figure-html/unnamed-chunk-18-1.png" width="480" /></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;figs/fig2.pdf&quot;</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">8</span>)</span></code></pre></div>
+</div>
+<div id="selection-differentials" class="section level3" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> Selection differentials</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>dif_cul_ori <span class="ot">&lt;-</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gmd</span>(mgidi_cul_ori) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">negative =</span> <span class="fu">ifelse</span>(SDperc <span class="sc">&lt;=</span> <span class="dv">0</span> , <span class="st">&quot;Negative&quot;</span>, <span class="st">&quot;Positive&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sense =</span> <span class="fu">ifelse</span>(sense <span class="sc">==</span> <span class="st">&quot;decrease&quot;</span>, <span class="st">&quot;Negative desired&quot;</span>, <span class="st">&quot;Positive desired&quot;</span>))</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Class of the model: mgidi</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Variable extracted: sel_dif</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dif_cul_ori, <span class="fu">aes</span>(SDperc, VAR)) <span class="sc">+</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill =</span> negative),</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">width =</span> <span class="dv">1</span>,</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">col =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fl">0.15</span>)) <span class="sc">+</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> sense, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(SDperc, <span class="dv">2</span>),</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">hjust =</span> <span class="fu">ifelse</span>(SDperc <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">1.1</span>)),</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Selection differential (%)&quot;</span>,</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Traits&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
+<p><img src="code_files/figure-html/unnamed-chunk-19-1.png" width="768" /></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;figs/fig3.pdf&quot;</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">5</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="substrate-main-factor" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Substrate main factor</h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>df_sub <span class="ot">&lt;-</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  pred_vals <span class="sc">%&gt;%</span> </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">means_by</span>(SUB) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_to_rownames</span>(<span class="st">&quot;SUB&quot;</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>mgidi_sub <span class="ot">&lt;-</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mgidi</span>(df_sub,  <span class="co"># a two-way table</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">ideotype =</span> ideotype_vector, <span class="co"># ideotype vector</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">SI =</span> <span class="dv">50</span>) <span class="co"># select the top two substrates</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Principal Component Analysis</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 22 x 4</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="do">##    PC    Eigenvalues `Variance (%)` `Cum. variance (%)`</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;chr&gt;       &lt;dbl&gt;          &lt;dbl&gt;               &lt;dbl&gt;</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  1 PC1         14.9            67.8                67.8</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  2 PC2          3.95           18.0                85.8</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  3 PC3          3.12           14.2               100  </span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  4 PC4          0               0                 100  </span></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  5 PC5          0               0                 100  </span></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a><span class="do">##  6 PC6          0               0                 100  </span></span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a><span class="do">##  7 PC7          0               0                 100  </span></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="do">##  8 PC8          0               0                 100  </span></span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a><span class="do">##  9 PC9          0               0                 100  </span></span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 PC10         0               0                 100  </span></span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a><span class="do">## # ... with 12 more rows</span></span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a><span class="do">## Factor Analysis - factorial loadings after rotation-</span></span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 22 x 6</span></span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a><span class="do">##    VAR     FA1   FA2   FA3 Communality Uniquenesses</span></span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a><span class="do">##  1 NNCF  -0.99  0.03 -0.17           1            0</span></span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a><span class="do">##  2 WNCF  -0.83  0.21 -0.52           1            0</span></span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a><span class="do">##  3 AWNCF  0.26  0.19 -0.95           1            0</span></span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a><span class="do">##  4 WUE    0.88 -0.33 -0.35           1            0</span></span>
+<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a><span class="do">##  5 NDBF   0.74  0.14 -0.66           1            0</span></span>
+<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a><span class="do">##  6 NDFF   0.91 -0.33 -0.25           1            0</span></span>
+<span id="cb32-40"><a href="#cb32-40" aria-hidden="true" tabindex="-1"></a><span class="do">##  7 NDBH   0.85 -0.46 -0.27           1            0</span></span>
+<span id="cb32-41"><a href="#cb32-41" aria-hidden="true" tabindex="-1"></a><span class="do">##  8 PHYL   0.88 -0.01 -0.47           1            0</span></span>
+<span id="cb32-42"><a href="#cb32-42" aria-hidden="true" tabindex="-1"></a><span class="do">##  9 TA     0.17 -0.71 -0.69           1            0</span></span>
+<span id="cb32-43"><a href="#cb32-43" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 NCF    0.96 -0.21 -0.18           1            0</span></span>
+<span id="cb32-44"><a href="#cb32-44" aria-hidden="true" tabindex="-1"></a><span class="do">## # ... with 12 more rows</span></span>
+<span id="cb32-45"><a href="#cb32-45" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb32-46"><a href="#cb32-46" aria-hidden="true" tabindex="-1"></a><span class="do">## Comunalit Mean: 1 </span></span>
+<span id="cb32-47"><a href="#cb32-47" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb32-48"><a href="#cb32-48" aria-hidden="true" tabindex="-1"></a><span class="do">## Selection differential </span></span>
+<span id="cb32-49"><a href="#cb32-49" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb32-50"><a href="#cb32-50" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 22 x 8</span></span>
+<span id="cb32-51"><a href="#cb32-51" aria-hidden="true" tabindex="-1"></a><span class="do">##    VAR   Factor     Xo     Xs      SD SDperc sense     goal</span></span>
+<span id="cb32-52"><a href="#cb32-52" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;</span></span>
+<span id="cb32-53"><a href="#cb32-53" aria-hidden="true" tabindex="-1"></a><span class="do">##  1 NNCF  FA1      7.20   7.89   0.690   9.58 decrease     0</span></span>
+<span id="cb32-54"><a href="#cb32-54" aria-hidden="true" tabindex="-1"></a><span class="do">##  2 WNCF  FA1     65.4   69.3    3.97    6.07 decrease     0</span></span>
+<span id="cb32-55"><a href="#cb32-55" aria-hidden="true" tabindex="-1"></a><span class="do">##  3 WUE   FA1    116.    83.2  -32.6   -28.1  decrease   100</span></span>
+<span id="cb32-56"><a href="#cb32-56" aria-hidden="true" tabindex="-1"></a><span class="do">##  4 NDBF  FA1     57.7   53.9   -3.80   -6.58 decrease   100</span></span>
+<span id="cb32-57"><a href="#cb32-57" aria-hidden="true" tabindex="-1"></a><span class="do">##  5 NDFF  FA1     76.3   71.9   -4.36   -5.72 decrease   100</span></span>
+<span id="cb32-58"><a href="#cb32-58" aria-hidden="true" tabindex="-1"></a><span class="do">##  6 NDBH  FA1     77.8   75.5   -2.30   -2.95 decrease   100</span></span>
+<span id="cb32-59"><a href="#cb32-59" aria-hidden="true" tabindex="-1"></a><span class="do">##  7 PHYL  FA1    164.   147.   -17.4   -10.6  decrease   100</span></span>
+<span id="cb32-60"><a href="#cb32-60" aria-hidden="true" tabindex="-1"></a><span class="do">##  8 NCF   FA1     23.5   29.0    5.52   23.5  increase   100</span></span>
+<span id="cb32-61"><a href="#cb32-61" aria-hidden="true" tabindex="-1"></a><span class="do">##  9 TNF   FA1     30.7   36.9    6.20   20.2  increase   100</span></span>
+<span id="cb32-62"><a href="#cb32-62" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 WCF   FA1    359.   462.   103.     28.8  increase   100</span></span>
+<span id="cb32-63"><a href="#cb32-63" aria-hidden="true" tabindex="-1"></a><span class="do">## # ... with 12 more rows</span></span>
+<span id="cb32-64"><a href="#cb32-64" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------------------------</span></span>
+<span id="cb32-65"><a href="#cb32-65" aria-hidden="true" tabindex="-1"></a><span class="do">## Selected genotypes</span></span>
+<span id="cb32-66"><a href="#cb32-66" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span>
+<span id="cb32-67"><a href="#cb32-67" aria-hidden="true" tabindex="-1"></a><span class="do">## S4 S3</span></span>
+<span id="cb32-68"><a href="#cb32-68" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------------</span></span></code></pre></div>
+<div id="plot-the-mgidi-index-1" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Plot the MGIDI index</h3>
+<p>The radar plot with the treatment ranking based on the MGIDI index is created with the S3 method <code>plot</code>. The argument <code>type</code> controls which plot is created.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>p_ind_sub <span class="ot">&lt;-</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(mgidi_sub,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">SI =</span> <span class="dv">50</span>,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">radar =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x.lab =</span> <span class="st">&quot;Origin x cultivar combination&quot;</span>,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y.lab =</span> <span class="st">&quot;MGIDI index&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_gray</span>() <span class="sc">+</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+</div>
+<div id="the-strengths-and-weaknesses-view-1" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> The strengths and weaknesses view</h3>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>p_cont_sub <span class="ot">&lt;-</span> </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(mgidi_sub,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">type =</span> <span class="st">&quot;contribution&quot;</span>, <span class="co"># Get the proportion plot</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">genotypes =</span> <span class="st">&quot;all&quot;</span>, <span class="co"># All treatments (selected treatments are plotted by default)</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="co"># save the plot</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange_ggplot</span>(p_ind_sub, p_cont_sub,</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">ncol =</span> <span class="dv">1</span>,</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">tag_levels =</span> <span class="st">&quot;a&quot;</span>)</span></code></pre></div>
+<p><img src="code_files/figure-html/unnamed-chunk-22-1.png" width="480" /></p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;figs/fig4.pdf&quot;</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">8</span>)</span></code></pre></div>
+</div>
+<div id="selection-differentials-1" class="section level3" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Selection differentials</h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>dif_sub <span class="ot">&lt;-</span> </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gmd</span>(mgidi_sub) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">negative =</span> <span class="fu">ifelse</span>(SDperc <span class="sc">&lt;=</span> <span class="dv">0</span> , <span class="st">&quot;Negative&quot;</span>, <span class="st">&quot;Positive&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sense =</span> <span class="fu">ifelse</span>(sense <span class="sc">==</span> <span class="st">&quot;decrease&quot;</span>, <span class="st">&quot;Negative desired&quot;</span>, <span class="st">&quot;Positive desired&quot;</span>))</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Class of the model: mgidi</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Variable extracted: sel_dif</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dif_sub, <span class="fu">aes</span>(SDperc, VAR)) <span class="sc">+</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill =</span> negative),</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">width =</span> <span class="dv">1</span>,</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">col =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fl">0.1</span>)) <span class="sc">+</span></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> sense, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(SDperc, <span class="dv">2</span>),</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">hjust =</span> <span class="fu">ifelse</span>(SDperc <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">1.1</span>)),</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Selection differential (%)&quot;</span>,</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Traits&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
+<p><img src="code_files/figure-html/unnamed-chunk-23-1.png" width="768" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;figs/fig5.pdf&quot;</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">5</span>)</span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+
+   
+   
+            
+      
+
+  <script>
+    $(document).ready(function () {
+
+			
+ 		
+		$('#content img:not(.no-lightbox)').addClass("image-lb");
+	$('#content').magnificPopup({
+	    type:'image',
+	    closeOnContentClick: false,
+	    closeBtnInside: false,
+	    delegate: '.image-lb',
+	    gallery: {enabled: true },
+	    image: {
+	        verticalFit: true,
+		titleSrc: 'alt'
+	    }
+ 	});
+ 	    });
+  </script>
+
+
+
+    <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+  
+</body>
+</html>
