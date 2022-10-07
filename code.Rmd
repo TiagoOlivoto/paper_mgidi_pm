@@ -1,7 +1,7 @@
 % Analysis 
 
 ```{r global_options, include = FALSE}
-knitr::opts_chunk$set(cache = TRUE, comment = "##", collapse = TRUE)
+knitr::opts_chunk$set(cache = FALSE, comment = "##", collapse = TRUE)
 
 ```
 
@@ -19,19 +19,19 @@ library(purrr)      # Manipulate lists
 library(tidyverse)  # plots, data manipulation
 library(kableExtra) # html tables
 library(emmeans)    # pairwise multiple comparison
-library(ExpDes)     # pairwise multiple comparison
+library(AgroR)      # pairwise multiple comparison
+library(factoextra)
 
-```
-
-
-```{r}
+# set a theme plot
 my_theme <- 
-  theme_gray() +
+  theme_bw() +
   theme(legend.title = element_blank(),
         axis.title = element_text(color = "black"),
         axis.text = element_text(color = "black"),
         panel.grid.minor = element_blank())
+
 ```
+
 
 
 # Simulated data
@@ -109,6 +109,8 @@ The MGIDI index is computed with the function `mgidi()`. The function has the fo
 
 * `ideotype`: A vector of length nvar where nvar is the number of variables used to plan the ideotype. Use `'h'` to indicate the traits in which higher values are desired or `'l'` to indicate the variables in which lower values are desired. For example, `ideotype = c("h, h, h, h, l")` will consider that the ideotype has higher values for the first four traits (following the order of columns in `.data`) and lower values for the last trait. If `.data` is a model fitted with the functions `gafem()` or `gamem()`, the order of the traits will be the declared in the argument `resp` in those functions.
 
+* `weights` Optional weights to assign for each trait in the selection process. It must be a numeric vector of length equal to the number of traits in `.data`. By default (NULL) a numeric vector of weights equal to 1 is used, i.e., all traits have the same weight in the selection process. It is suggested weights ranging from 0 to 1. The weights will then shrink the ideotype vector toward 0. This is useful, for example, to prioritize grain yield rather than a plant-related trait in the selection process.
+
 * `use`: The method for computing covariances in the presence of missing values. Defaults to `complete.obs`, i.e., missing values are handled by casewise deletion.
 
 * `verbose`: If `verbose = TRUE` (Default) then some results are shown in the console.
@@ -126,7 +128,7 @@ pred_mat <-
   predict(man) %>% 
   as.data.frame() %>% 
   mutate(TRAT = df$GEN) %>% 
-  means_by(TRAT) %>% 
+  mean_by(TRAT) %>% 
   column_to_rownames("TRAT")
 
 
@@ -173,7 +175,6 @@ ind3$sel_dif
 ```
 
 
-
 ```{r fig.width=10, fig.height=4, fig.cap="Pairwise comparisons for V1 (a), V2 (b), V3 (c), and the MGIDI index for three selection strategies, namely, desired higher values for all traits (c), lower values for V1 and V2 and higher values for V3 (d), and lower values for all traits (e)."}
 arrange_ggplot((p1 + p2 + p3),
                (p4 + p5 + p6),
@@ -181,7 +182,7 @@ arrange_ggplot((p1 + p2 + p3),
                heights = c(0.6, 1),
                tag_levels = "a",
                guides = "collect")
-ggsave("figs/fig1.pdf", width = 8, height = 4)
+ggsave("figs/fig1.pdf", width = 10, height = 5)
 ```
 
 
@@ -227,9 +228,10 @@ pairs <- pwpm(means_v1)
 Definetively, this is not the better option. Another way to depict comparisons graphically via the comparisons argument in `plot.emm()`:
 
 ```{r fig.height=15, fig.cap="Pairwise comparisons based on Tukey adjustment"}
-p7 <- plot(means_v1, comparisons = TRUE, CIs = FALSE)
+p7 <- 
+  plot(means_v1, comparisons = TRUE, CIs = FALSE) +
+  my_theme
 p7
-
 ```
 
 The red arrows are for the comparisons among genotype's means. If an arrow from one mean overlaps an arrow from another group, the difference is not “significant,” based on the adjust setting (which defaults to "tukey").
@@ -246,8 +248,10 @@ p8
 Another way to depict comparisons is by compact letter displays, whereby two means sharing one or more grouping symbols are not “significantly” different. Here, I use the package [`ExpDes`](https://www.researchgate.net/publication/268443974_ExpDes_an_R_package_for_ANOVA_and_experimental_designs) to generate compact letter displays based on Tukey test.
 
 ```{r}
-with(df_g,
-     rbd(GEN, REP, V1))
+plot <- 
+  with(df_g,
+       DBC(GEN, REP, V1))
+
 ```
 
 
@@ -269,14 +273,14 @@ summary(man_complex)
 pred_complex <- cbind(df_g[, 1:2], predict(man_complex))
 mat_g <-
   pred_complex %>%
-  means_by(GEN) %>%
+  mean_by(GEN) %>%
   column_to_rownames("GEN")
 
 # higher values for all traits are better
 ind4 <- mgidi(mat_g,
               ideotype = rep("h", 10), # default
               verbose = FALSE)
-p9 <- plot(ind4, arrange.label = TRUE)
+p9 <- plot(ind4)
 p9
 ind4$sel_dif
 
@@ -285,7 +289,7 @@ ind4$sel_dif
 ind5 <- mgidi(mat_g,
               ideotype = c(rep("h", 7), rep("l", 3)),
               verbose = FALSE)
-p10 <- plot(ind5, arrange.label = TRUE)
+p10 <- plot(ind5)
 p10
 ind5$sel_dif
 
@@ -294,17 +298,54 @@ ind5$sel_dif
 ind6 <- mgidi(mat_g,
               ideotype =  rep("l", 10), # default
               verbose = FALSE)
-p11 <- plot(ind6, arrange.label = TRUE)
+p11 <- plot(ind6)
 p11
 ind6$sel_dif
 ```
 
 
+# Weigths 
+```{r}
+df <- 
+  g_simula(ngen = 5,
+           nrep = 3,
+           nvars = 3,
+           seed = c(5, 2, 32)) %>% 
+  mean_by(GEN) |> 
+  column_to_rownames("GEN")
+
+# equal weights
+equal_weigths <- mgidi(df, verbose = FALSE)
+df
+equal_weigths$scores_ide
+equal_weigths$scores_gen
+equal_weigths$MGIDI
+
+
+# higuer weight for V2 
+# see how H5 becomes the first ranked
+wv2 <- mgidi(df,
+             weights = c(1, 15, 1),
+             verbose = FALSE)
+df
+wv2$scores_ide
+wv2$scores_gen
+wv2$MGIDI
+
+```
 
 # Real data example (Strawberry)
 
 ```{r  warning = FALSE, message = FALSE}
 rm(list = ls())
+# set a theme plot
+my_theme <- 
+  theme_bw() +
+  theme(legend.title = element_blank(),
+        axis.title = element_text(color = "black"),
+        axis.text = element_text(color = "black"),
+        panel.grid.minor = element_blank())
+
 df <-
   import("https://bit.ly/strawberry_data", setclass = "tbl") %>% 
   metan::as_factor(1:4)
@@ -317,9 +358,11 @@ str(df)
 The function `manova()` computes a multivariate analysis of variance `df`.
 
 ```{r}
-man_straw <- manova(
-  cbind(NNCF,WNCF,AWNCF,WUE,NDBF,NDFF,NDBH,PHYL,TA,NCF,TNF
-        ,WCF, TWF,AWCF,OAWF,FY,TSS,TSS_TA,FIRM,L,CHROMA,H) ~ SUB*ORI*CUL, data = df)
+man_straw <- 
+  manova(
+    cbind(NNCF,WNCF,AWNCF,WUE,NDBF,NDFF,NDBH,PHYL,TA,NCF,TNF
+          ,WCF, TWF,AWCF,OAWF,FY,TSS,TSS_TA,FIRM,L,CHROMA,H) ~ SUB*ORI*CUL,
+    data = df)
 tidy(man_straw, intercept =  TRUE)
 
 ```
@@ -342,7 +385,7 @@ The MGIDI index can be computed either using a model of class `gamem` or `gafem`
 # compute a two-wat table with means by origin and cultivar
 df_ori_cul <-
   pred_vals %>%
-  means_by(ORI, CUL) %>% 
+  mean_by(ORI, CUL) %>% 
   concatenate(ORI, CUL, new_var = TRAT, .after = CUL) %>% 
   remove_cols(ORI, CUL) %>% 
   round_cols() %>% 
@@ -351,11 +394,13 @@ df_ori_cul <-
 df_ori_cul
 
 (ideotype_vector <- c(rep("l", 9), rep("h", 13)))
+(weight <-  c(rep(1, 9), 4, 1, 4, rep(1, 10)))
+
 mgidi_cul_ori <- 
   mgidi(df_ori_cul,                 # a two-way table
         ideotype = ideotype_vector, # ideotype vector
+        weights = weight,           # weigth vector
         SI = 50)                    # select two treatments
-
 ```
 
 
@@ -368,7 +413,7 @@ p_ind_cul_ori <-
        radar = FALSE,
        x.lab = "Origin x cultivar combination",
        y.lab = "MGIDI index") +
-  theme_gray() +
+  my_theme +
   theme(legend.title = element_blank(),
         legend.position = "bottom")
 
@@ -384,15 +429,42 @@ p_cont_cul_ori <-
   plot(mgidi_cul_ori,
        type = "contribution", # Get the proportion plot
        genotypes = "all", # All treatments (selected treatments are plotted by default)
-       title = "")
+       title = "") +
+  my_theme +
+  theme(legend.position = "bottom")
 
-# save the plot
-arrange_ggplot(p_ind_cul_ori, p_cont_cul_ori,
-               ncol = 1,
-               tag_levels = "a")
-ggsave("figs/fig2.pdf", width = 4, height = 8)
+
 ```
 
+
+### PCA
+```{r fig.width=11, fig.height=5}
+
+pca_cul_ori <- prcomp(df_ori_cul, scale. = TRUE)
+factors <- 
+  mgidi_cul_ori$sel_dif |> 
+  select(VAR, Factor)
+factors <- 
+  data.frame(VAR = names(df_ori_cul)) |> 
+  left_join(factors)
+
+pca <- 
+  fviz_pca_biplot(pca_cul_ori, 
+                  repel = TRUE,
+                  col.var = factors$Factor) +
+  labs(color = "") +
+  my_theme +
+  theme(legend.position = "bottom")
+
+# save the plot
+arrange_ggplot(p_ind_cul_ori,
+               p_cont_cul_ori,
+               pca,
+               ncol = 3,
+               tag_levels = "a")
+
+ggsave("figs/fig2.pdf", width = 12, height = 4)
+```
 
 
 ### Selection differentials
@@ -417,8 +489,12 @@ ggplot(dif_cul_ori, aes(SDperc, VAR)) +
        y = "Traits") + 
   theme(legend.position = "bottom",
         legend.title = element_blank(),
-        panel.grid.minor = element_blank())
-ggsave("figs/fig3.pdf", width = 4, height = 5)
+        panel.grid.minor = element_blank()) +
+  my_theme +
+  theme(legend.position = "bottom")
+
+
+ggsave("figs/fig3.pdf", width = 4, height = 7)
 ```
 
 
@@ -429,12 +505,14 @@ ggsave("figs/fig3.pdf", width = 4, height = 5)
 ```{r}
 df_sub <- 
   pred_vals %>% 
-  means_by(SUB) %>% 
+  mean_by(SUB) %>% 
   column_to_rownames("SUB")
 
+(weight <-  c(rep(1, 9), 4, 1, 4, rep(1, 10)))
 mgidi_sub <-
   mgidi(df_sub,  # a two-way table
         ideotype = ideotype_vector, # ideotype vector
+        weights = weight,           # weigth vector
         SI = 50) # select the top two substrates
 
 ```
@@ -449,9 +527,8 @@ p_ind_sub <-
        radar = FALSE,
        x.lab = "Origin x cultivar combination",
        y.lab = "MGIDI index") +
-  theme_gray() +
-  theme(legend.title = element_blank(),
-        legend.position = "bottom")
+  my_theme +
+  theme(legend.position = "bottom")
 ```
 
 
@@ -463,15 +540,41 @@ p_cont_sub <-
   plot(mgidi_sub,
        type = "contribution", # Get the proportion plot
        genotypes = "all", # All treatments (selected treatments are plotted by default)
-       title = "")
+       title = "") +
+  my_theme +
+  theme(legend.position = "bottom")
 
-# save the plot
-arrange_ggplot(p_ind_sub, p_cont_sub,
-               ncol = 1,
-               tag_levels = "a")
-ggsave("figs/fig4.pdf", width = 4, height = 8)
 ```
 
+
+### PCA
+```{r fig.width=11, fig.height=5}
+
+pca_sub <- prcomp(df_sub, scale. = TRUE)
+factors <- 
+  mgidi_sub$sel_dif |> 
+  select(VAR, Factor)
+factors <- 
+  data.frame(VAR = names(df_sub)) |> 
+  left_join(factors)
+
+pca_sub <- 
+  fviz_pca_biplot(pca_sub, 
+                  repel = TRUE,
+                  col.var = factors$Factor) +
+  labs(color = "") +
+  my_theme +
+  theme(legend.position = "bottom")
+
+# save the plot
+arrange_ggplot(p_ind_sub,
+               p_cont_sub,
+               pca_sub,
+               ncol = 3,
+               tag_levels = "a")
+
+ggsave("figs/fig4.pdf", width = 12, height = 4)
+```
 
 
 
@@ -488,23 +591,38 @@ ggplot(dif_sub, aes(SDperc, VAR)) +
            width = 1,
            col = "black",
            size = 0.2) +
-    scale_x_continuous(expand = expansion(mult = 0.1)) +
+  scale_x_continuous(expand = expansion(mult = 0.1)) +
   facet_wrap(~ sense, scales = "free", ncol = 1) + 
   geom_text(aes(label = round(SDperc, 2),
                 hjust = ifelse(SDperc > 0, -0.1, 1.1)),
             size = 2) + 
   labs(x = "Selection differential (%)",
-       y = "Traits") + 
-  theme(legend.position = "bottom",
-        legend.title = element_blank(),
-        panel.grid.minor = element_blank())
+       y = "Traits")  +
+  my_theme +
+  theme(legend.position = "bottom")
 
-ggsave("figs/fig5.pdf", width = 4, height = 5)
+ggsave("figs/fig5.pdf", width = 4, height = 7)
 
 ```
 
 
 
+# Benchmark
+```{r}
+df <- 
+  g_simula(150, 2, 50) |> 
+  mean_by(GEN) |> 
+  column_to_rownames("GEN")
+
+system.time(
+  mgidi(df)
+)
+
+system.time(
+  prcomp(df)
+)
+
+```
 
 
 

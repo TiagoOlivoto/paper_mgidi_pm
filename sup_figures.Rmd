@@ -1,7 +1,7 @@
 % Supplementary figures 
 
 ```{r global_options, include = FALSE}
-knitr::opts_chunk$set(cache = TRUE, comment = "##", collapse = TRUE)
+knitr::opts_chunk$set(cache = FALSE, comment = "##", collapse = TRUE)
 xaringanExtra::use_panelset()
 ```
 
@@ -13,6 +13,7 @@ library(rio)        # data importation
 library(tidyverse)  # plots, data manipulation
 
 ```
+
 
 
 ```{r echo=FALSE}
@@ -251,16 +252,32 @@ plot_vars(df, WCF)
 
 # Water retention curve
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.cap="Water retention curve for different substrates used in the experiment."}
 wrc <- 
   import("data/TABLES.xlsx", sheet = "substrate3") %>% 
   pivot_longer(-SUBSTRATE,
                names_to = "tension") %>% 
   as_numeric(tension)
+
 ggplot(wrc, aes(tension, value, color = SUBSTRATE, group = SUBSTRATE)) +
   stat_summary(geom = "point", fun = mean) +
   stat_summary(geom = "line", fun = mean) +
   labs(x = "Water tension (kPa)",
        y = expression(Moisture~(cm^3~cm^{-3})))
+```
+
+
+
+# Example (Aaby 2012)
+In this example, we compute the MGIDI index for ranking 32 cultivars based on 18 traits. The original article is found at http://link.springer.com/10.1007/BF02289233
+```{r fig.width=7, fig.height=7}
+mgidi_aaby <- 
+  import("data/df_aaby.xlsx") |> 
+  tidy_colnames() |> 
+  column_to_rownames("CULTIVAR") |> 
+  mgidi(SI = 2)
+
+plot(mgidi_aaby)
+
 ```
 
