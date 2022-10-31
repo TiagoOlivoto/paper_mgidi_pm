@@ -30,8 +30,8 @@ navbar:
     href: https://github.com/TiagoOlivoto/paper_mgidi_pm/archive/refs/heads/master.zip
   - text: "Doi"
     icon: ai ai-doi ai
-    href: https://doi.org/10.5281/zenodo.5809502
+    href: https://doi.org/10.5281/zenodo.7155173
   right:
-  - text: metan
+  - text: source code
     icon: fa-github
-    href: https://github.com/TiagoOlivoto/metan
+    href: https://github.com/TiagoOlivoto/paper_mgidi_pm
