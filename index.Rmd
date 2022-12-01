@@ -1,6 +1,6 @@
 % About
 # <i class="fas fa-glasses"></i>About {-}
-In this website are available the data and scripts used in the manuscript *MGIDI: a powerful tool to analyze plant multivariate data*
+In this website are available the data and scripts used in the manuscript [*MGIDI: a powerful tool to analyze plant multivariate data*](https://plantmethods.biomedcentral.com/articles/10.1186/s13007-022-00952-5)
 
 
 # <i class="fas fa-code"></i>How to reproduce? {-}
